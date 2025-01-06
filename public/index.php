@@ -26,7 +26,8 @@
 
     $router->add('GET', '/reservations', 'ReservationsPage@index', "client");
     $router->add('GET', '/blog', 'BlogThemesPage@index', "client");
-    $router->add('GET', '/blog/themes', 'ArticlesPage@index', "client");
+    $router->add('GET', '/blog/themes/articles/{id}', 'ArticlesPage@show', "client");
+    $router->add('GET', '/blog/themes/{id}', 'ArticlesPage@index', "client");
 
     $router->add('POST', '/api/vehicles', 'VehiclesPage@getFilteredVehicles');
     $router->add('POST', '/api/getReservations', 'ReservationsPage@getFilteredReservations');
