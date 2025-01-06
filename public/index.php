@@ -51,6 +51,7 @@
     $router->add('POST', '/categories/delete', 'CategoriesAdminPage@delete', "admin");
     
     $router->add('GET', '/themes', 'ThemesAdminPage@index', "admin");
+    $router->add('GET', '/articles', 'ArticlesAdminPage@index', "admin");
 
     $router->add('GET', '/users', 'UsersPage@index', "admin");
     
