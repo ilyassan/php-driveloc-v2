@@ -4,12 +4,18 @@ DROP PROCEDURE IF EXISTS AddReservation;
 
 DROP TABLE IF EXISTS reservations;
 DROP TABLE IF EXISTS ratings;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS roles;
 DROP TABLE IF EXISTS vehicles;
 DROP TABLE IF EXISTS places;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS types;
+DROP TABLE IF EXISTS articles_tags;
+DROP TABLE IF EXISTS tags;
+DROP TABLE IF EXISTS favorites;
+DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS articles;
+DROP TABLE IF EXISTS themes;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS roles;
 
 
 -- Creating tables
@@ -93,6 +99,60 @@ CREATE TABLE ratings (
     PRIMARY KEY(id),
     FOREIGN KEY(vehicle_id) REFERENCES vehicles(id),
     FOREIGN KEY(client_id) REFERENCES users(id)
+);
+
+
+CREATE TABLE themes (
+    id INT AUTO_INCREMENT,
+    name VARCHAR(255),
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE articles (
+    id INT AUTO_INCREMENT,
+    title VARCHAR(255),
+    description TEXT,
+    image_name VARCHAR(255),
+    is_published BOOLEAN,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    theme_id INT,
+    client_id INT,
+    PRIMARY KEY(id),
+    FOREIGN KEY(theme_id) REFERENCES themes(id) ON DELETE CASCADE,
+    FOREIGN KEY(client_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE comments (
+    id INT AUTO_INCREMENT,
+    content TEXT,
+    is_deleted BOOLEAN,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    article_id INT,
+    client_id INT,
+    PRIMARY KEY(id),
+    FOREIGN KEY(article_id) REFERENCES articles(id) ON DELETE CASCADE,
+    FOREIGN KEY(client_id) REFERENCES users(id)
+);
+
+CREATE TABLE favorites (
+    article_id INT,
+    client_id INT,
+    FOREIGN KEY(article_id) REFERENCES articles(id) ON DELETE CASCADE,
+    FOREIGN KEY(client_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE tags (
+    id INT AUTO_INCREMENT,
+    name VARCHAR(255),
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE articles_tags (
+    article_id INT,
+    tag_id INT,
+    FOREIGN KEY(article_id) REFERENCES articles(id) ON DELETE CASCADE,
+    FOREIGN KEY(tag_id) REFERENCES tags(id) ON DELETE CASCADE,
+    PRIMARY KEY(article_id, tag_id)
 );
 
 
@@ -794,16 +854,46 @@ INSERT INTO ratings (rate, vehicle_id, client_id, created_at) VALUES
     (5, 12, 2, '2024-07-10 15:00:00');
 
 
+    INSERT INTO themes (name) VALUES 
+    ('Car Repair and Maintenance'),
+    ('High-Speed Vehicles'),
+    ('Custom Car Modifications'),
+    ('Eco-Friendly Driving'),
+    ('Car Safety Features'),
+    ('Road Trips and Travel'),
+    ('Car Detailing and Cleaning'),
+    ('Driving Techniques'),
+    ('Car Audio Systems'),
+    ('Vintage Car Restoration');
 
-
-
-
-
-
-
-   SELECT u.*, COUNT(r.id) as reservations_count
-    FROM users u
-    JOIN reservations r ON r.client_id = u.id
-    WHERE u.role_id = 1
-    GROUP BY u.id
-    LIMIT 90, 10; 
+    INSERT INTO tags (name) VALUES 
+    ('Engine Tuning'),
+    ('Autonomous Vehicles'),
+    ('Sports Cars'),
+    ('Vintage Cars'),
+    ('Car Interior Design'),
+    ('Fuel Efficiency'),
+    ('Car Batteries'),
+    ('Driving Safety'),
+    ('Car Insurance'),
+    ('Car Financing'),
+    ('Car Shows'),
+    ('Car Photography'),
+    ('Performance Upgrades'),
+    ('Winter Driving'),
+    ('Summer Driving'),
+    ('Car Gadgets'),
+    ('Car Paint Jobs'),
+    ('Exhaust Systems'),
+    ('Car Suspension'),
+    ('Car Brakes'),
+    ('Car Tires'),
+    ('Car Navigation'),
+    ('Car Lighting'),
+    ('Car Alarms'),
+    ('Car Storage'),
+    ('Car Shipping'),
+    ('Car Rentals'),
+    ('Car History'),
+    ('Car Museums'),
+    ('Car Racing Events');
