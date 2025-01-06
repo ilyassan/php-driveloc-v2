@@ -26,6 +26,7 @@
 
     $router->add('GET', '/reservations', 'ReservationsPage@index', "client");
     $router->add('GET', '/blog', 'BlogThemesPage@index', "client");
+    $router->add('GET', '/blog/themes/articles/create', 'ArticlesPage@create', "client");
     $router->add('GET', '/blog/themes/articles/{id}', 'ArticlesPage@show', "client");
     $router->add('GET', '/blog/themes/{id}', 'ArticlesPage@index', "client");
 

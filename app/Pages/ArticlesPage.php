@@ -11,4 +11,9 @@
         {
             $this->render('/articles/show');
         }
+
+        public function create()
+        {
+            $this->render('/articles/create');
+        }
     }
