@@ -60,7 +60,20 @@
                     <p class="px-4 text-xs font-semibold text-gray-400 uppercase">Vehicle Categories</p>
                     <a href="<?= URLROOT . 'categories' ?>" class="flex items-center gap-3 px-4 py-2 <?= isActive(URLROOT . 'categories') ?> rounded-lg">
                         <i class="fas fa-layer-group"></i>
-                        <span>All Categories</span>
+                        <span>Categories</span>
+                    </a>
+                </div>
+
+                <!-- Categories Section -->
+                <div class="space-y-1 pt-2">
+                    <p class="px-4 text-xs font-semibold text-gray-400 uppercase">Blog</p>
+                    <a href="<?= URLROOT . 'themes' ?>" class="flex items-center gap-3 px-4 py-2 <?= isActive(URLROOT . 'themes') ?> rounded-lg">
+                        <i class="fas fa-layer-group"></i>
+                        <span>Themes</span>
+                    </a>
+                    <a href="<?= URLROOT . 'articles' ?>" class="flex items-center gap-3 px-4 py-2 <?= isActive(URLROOT . 'articles') ?> rounded-lg">
+                        <i class="fas fa-layer-group"></i>
+                        <span>Articles</span>
                     </a>
                 </div>
 
