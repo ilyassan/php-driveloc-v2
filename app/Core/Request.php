@@ -13,7 +13,7 @@ class Request
     {
         $path = $_SERVER['REQUEST_URI'] ?? '/';
         
-        $basePath = '/driveloc/public';
+        $basePath = '/driveloc-v2/public';
         if (strpos($path, $basePath) === 0) {
             $path = substr($path, strlen($basePath));
         }
