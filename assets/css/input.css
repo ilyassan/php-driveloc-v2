@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+html::-webkit-scrollbar {
+    @apply w-1
+}
+
+html::-webkit-scrollbar-thumb {
+    @apply rounded-2xl bg-primary
+}
+
+.container {
+    @apply min-w-full px-3 sm:px-6 md:px-10 lg:px-20 xl:px-24;
+}
