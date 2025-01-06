@@ -11,4 +11,9 @@
         {
             $this->render('/articles/show');
         }
+
+        public function pending()
+        {
+            $this->render('/articles/pending');
+        }
     }

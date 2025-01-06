@@ -79,6 +79,10 @@
                         <i class="fas fa-layer-group"></i>
                         <span>Articles</span>
                     </a>
+                    <a href="<?= URLROOT . 'articles/pending' ?>" class="flex items-center gap-3 px-4 py-2 <?= isActive(URLROOT . 'articles/pending') ?> rounded-lg">
+                        <i class="fas fa-layer-group"></i>
+                        <span>Pending Articles</span>
+                    </a>
                 </div>
 
                 <!-- Users Section -->
