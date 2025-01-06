@@ -54,6 +54,8 @@
     $router->add('GET', '/articles', 'ArticlesAdminPage@index', "admin");
     $router->add('GET', '/articles/{id}', 'ArticlesAdminPage@show', "admin");
 
+    $router->add('GET', '/tags', 'TagsPage@index', "admin");
+
     $router->add('GET', '/users', 'UsersPage@index', "admin");
     
     $router->add('GET', '/signup', 'SignupPage@index');

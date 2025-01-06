@@ -71,6 +71,10 @@
                         <i class="fas fa-layer-group"></i>
                         <span>Themes</span>
                     </a>
+                    <a href="<?= URLROOT . 'tags' ?>" class="flex items-center gap-3 px-4 py-2 <?= isActive(URLROOT . 'tags') ?> rounded-lg">
+                        <i class="fas fa-layer-group"></i>
+                        <span>Tags</span>
+                    </a>
                     <a href="<?= URLROOT . 'articles' ?>" class="flex items-center gap-3 px-4 py-2 <?= isActive(URLROOT . 'articles') ?> rounded-lg">
                         <i class="fas fa-layer-group"></i>
                         <span>Articles</span>
