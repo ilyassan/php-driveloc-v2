@@ -52,6 +52,8 @@
     
     $router->add('GET', '/themes', 'ThemesAdminPage@index', "admin");
     $router->add('GET', '/articles', 'ArticlesAdminPage@index', "admin");
+    $router->add('GET', '/articles/pending', 'PendingArticlesPage@index', "admin");
+    $router->add('GET', '/articles/pending/{id}', 'PendingArticlesPage@show', "admin");
     $router->add('GET', '/articles/{id}', 'ArticlesAdminPage@show', "admin");
 
     $router->add('GET', '/tags', 'TagsPage@index', "admin");
