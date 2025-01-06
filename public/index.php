@@ -30,6 +30,8 @@
     $router->add('GET', '/blog/themes/articles/{id}', 'ArticlesPage@show', "client");
     $router->add('GET', '/blog/themes/{id}', 'ArticlesPage@index', "client");
 
+    $router->add('GET', '/blog/favorites', 'FavoritesPage@index', "client");
+
     $router->add('POST', '/api/vehicles', 'VehiclesPage@getFilteredVehicles');
     $router->add('POST', '/api/getReservations', 'ReservationsPage@getFilteredReservations');
     $router->add('POST', '/api/rateReservation', 'ReservationsPage@rateReservationVehicle');
