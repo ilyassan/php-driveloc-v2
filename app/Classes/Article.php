@@ -74,6 +74,30 @@
         self::$db->bind(':theme_id', $this->theme_id);
         self::$db->bind(':client_id', $this->client_id);
 
+        if (self::$db->execute()) {
+            $this->id = self::$db->lastInsertId();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function attachTags($ids)
+    {
+        $sql = "INSERT INTO articles_tags (article_id, tag_id) VALUES ";
+        $values = [];
+        $params = [];
+        foreach ($ids as $index => $tag_id) {
+            $values[] = "(:article_id_{$index}, :tag_id_{$index})";
+            $params[":article_id_{$index}"] = $this->id;
+            $params[":tag_id_{$index}"] = $tag_id;
+        }
+        $sql .= implode(", ", $values);
+        self::$db->query($sql);
+        foreach ($params as $key => $value) {
+            self::$db->bind($key, $value);
+        }
+
         return self::$db->execute();
     }
 
