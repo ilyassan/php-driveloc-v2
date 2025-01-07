@@ -40,9 +40,9 @@
             <a href="<?= URLROOT . "reservations" ?>">Reservations</a>
           </li>
           <li
-            class="w-full block text-center py-3 sm:p-0 sm:w-fit sm:pb-1 transition-all duration-300 <?= requestPath() == URLROOT . "blog" ? 'text-primary border-primary' : 'sm:border-transparent'?> border-b sm:border-b-2 hover:text-primary hover:border-primary"
+            class="w-full block text-center py-3 sm:p-0 sm:w-fit sm:pb-1 transition-all duration-300 <?= requestPath() == URLROOT . "themes" ? 'text-primary border-primary' : 'sm:border-transparent'?> border-b sm:border-b-2 hover:text-primary hover:border-primary"
           >
-            <a href="<?= URLROOT . "blog" ?>">Blog</a>
+            <a href="<?= URLROOT . "themes" ?>">Blog</a>
           </li>
           <li
             class="cursor-pointer mt-5 sm:m-0 pt-1 pb-2 transition-all duration-300 bg-primary text-white px-2 rounded-lg"
