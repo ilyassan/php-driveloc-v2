@@ -25,9 +25,12 @@
     $router->add('GET', '/vehicles/{id}', 'VehiclesDetailsPage@index', "client");
 
     $router->add('GET', '/reservations', 'ReservationsPage@index', "client");
+
     $router->add('GET', '/themes', 'ThemesPage@index', "client");
     $router->add('GET', '/themes/{id}', 'ArticlesPage@index', "client");
+
     $router->add('GET', '/articles/create', 'ArticlesPage@create', "client");
+    $router->add('POST', '/articles/store', 'ArticlesPage@store', "client");
     $router->add('GET', '/articles/{id}', 'ArticlesPage@show', "client");
 
     $router->add('GET', '/favorites', 'FavoritesPage@index', "client");
