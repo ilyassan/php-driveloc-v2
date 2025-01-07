@@ -2,12 +2,21 @@
 
     class ArticlesPage extends BasePage
     {
-        public function index($id)
-        {
-            $articles = Article::getArticlesOfTheme($id);
+        public function index($themeId)
+    {
+        $keyword = isset($_GET['search']) ? trim($_GET['search']) : '';
+        
+        $theme = Theme::find($themeId);
 
-            $this->render('/articles/index', compact('articles'));
+        if (!empty($keyword)) {
+            $articles = Article::searchByKeyword($themeId, $keyword);
+        } else {
+            $articles = Article::getArticlesOfTheme($themeId);
         }
+
+
+        $this->render('/articles/index', compact('articles', 'theme', 'keyword'));
+    }
 
         public function show($id)
         {

@@ -86,6 +86,7 @@
     let forms = document.querySelectorAll('form');
     if (forms.length > 0) {
         forms.forEach(form => {
+            if(form.method == "get") return;
             let input = document.createElement('input');
             input.setAttribute('type', 'hidden');
             input.setAttribute('name', 'csrf_token');
