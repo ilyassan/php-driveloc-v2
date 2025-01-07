@@ -114,46 +114,59 @@
     }
 
 
-    public static function getArticlesOfTheme($themeId)
+    public static function countByFilter($themeId, $keyword)
     {
-        $sql = "SELECT a.*,
-                COUNT(DISTINCT l.id) as likes_count,
-                COUNT(DISTINCT d.id) as dislikes_count,
-                COUNT(DISTINCT c.id) as comments_count
+        $sql = "SELECT COUNT(a.id) as count
                 FROM articles a
-                LEFT JOIN likes l ON l.article_id = a.id
-                LEFT JOIN dislikes d ON d.article_id = a.id
-                LEFT JOIN comments c ON c.article_id = a.id
-                WHERE a.theme_id = :theme_id
-                GROUP BY a.id";
-        
-        self::$db->query($sql);
-        self::$db->bind(':theme_id', $themeId);
-        $results = self::$db->results();
-
-        return $results;
-    }
-
-    public static function searchByKeyword($themeId, $searchTerm)
-    {
-        $sql = "SELECT a.*,
-                COUNT(DISTINCT l.id) as likes_count,
-                COUNT(DISTINCT d.id) as dislikes_count,
-                COUNT(DISTINCT c.id) as comments_count
-                FROM articles a
-                LEFT JOIN likes l ON l.article_id = a.id
-                LEFT JOIN dislikes d ON d.article_id = a.id
-                LEFT JOIN comments c ON c.article_id = a.id
                 WHERE a.theme_id = :theme_id
                 AND (a.title LIKE :search_term 
-                     OR a.content LIKE :search_term)
-                GROUP BY a.id";
+                OR a.content LIKE :search_term)";
+
+        self::$db->query($sql);
+        self::$db->bind(':theme_id', $themeId);
+        self::$db->bind(':search_term', '%' . $keyword . '%');
+        $result = self::$db->single();
+
+        return $result->count; 
+    }
+
+
+    public static function paginate($themeId, int $page, int $articlesPerPage, $searchTerm = '')
+    {
+        $offset = ($page - 1) * $articlesPerPage;
+        
+        // Base SQL query
+        $sql = "SELECT a.*,
+                COUNT(DISTINCT l.id) as likes_count,
+                COUNT(DISTINCT d.id) as dislikes_count,
+                COUNT(DISTINCT c.id) as comments_count
+                FROM articles a
+                LEFT JOIN likes l ON l.article_id = a.id
+                LEFT JOIN dislikes d ON d.article_id = a.id
+                LEFT JOIN comments c ON c.article_id = a.id
+                WHERE a.theme_id = :theme_id";
+        
+        // Add search condition only if search term is not empty
+        if (!empty($searchTerm)) {
+            $sql .= " AND (a.title LIKE :search_term 
+                     OR a.content LIKE :search_term)";
+        }
+        
+        $sql .= " GROUP BY a.id
+                  LIMIT :offset, :articles_per_page";
         
         self::$db->query($sql);
         self::$db->bind(':theme_id', $themeId);
-        self::$db->bind(':search_term', '%' . $searchTerm . '%');
+        self::$db->bind(':offset', $offset);
+        self::$db->bind(':articles_per_page', $articlesPerPage);
+        
+        // Only bind search term if it's not empty
+        if (!empty($searchTerm)) {
+            self::$db->bind(':search_term', '%' . $searchTerm . '%');
+        }
+    
         $results = self::$db->results();
-
+    
         return $results;
     }
 }
