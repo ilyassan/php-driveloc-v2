@@ -2,21 +2,25 @@
 
     class ArticlesPage extends BasePage
     {
+
         public function index($themeId)
-    {
-        $keyword = isset($_GET['search']) ? trim($_GET['search']) : '';
-        
-        $theme = Theme::find($themeId);
+        {
+            $articlesPerPage = $_GET['per_page'] ?? 10; // Default is 10 per page
 
-        if (!empty($keyword)) {
-            $articles = Article::searchByKeyword($themeId, $keyword);
-        } else {
-            $articles = Article::getArticlesOfTheme($themeId);
+            $keyword = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $page = $_GET['page'] ?? 1;
+            
+            if (! is_numeric($page) || $page < 1 || ! is_numeric($articlesPerPage) || $articlesPerPage < 1) {
+                redirect('themes/'. $themeId);
+            }
+
+            $theme = Theme::find($themeId);
+
+            $articlesTotalCount = Article::countByFilter($themeId, $keyword);
+            $articles = Article::paginate($themeId, $page, $articlesPerPage, $keyword);
+
+            $this->render('/articles/index', compact('articles', 'articlesTotalCount', 'articlesPerPage', 'theme', 'keyword'));
         }
-
-
-        $this->render('/articles/index', compact('articles', 'theme', 'keyword'));
-    }
 
         public function show($id)
         {

@@ -43,33 +43,28 @@
             <nav role="navigation" aria-label="Pagination Navigation">
                 <ul class="flex items-center space-x-2">
                     <?php
-                    // Pagination logic
                     $usersPerPage = 10;
                     $totalPages = ceil($usersTotalCount / $usersPerPage);
                     $currentPage = (int) ($_GET['page'] ?? 1);
 
-                    // Ensure current page is within valid range
                     if ($currentPage < 1) {
                         $currentPage = 1;
                     } elseif ($currentPage > $totalPages) {
                         $currentPage = $totalPages;
                     }
 
-                    // Calculate visible pages
                     $visiblePages = 5;
                     $halfVisible = floor($visiblePages / 2);
 
                     $startPage = max(1, $currentPage - $halfVisible);
                     $endPage = min($totalPages, $currentPage + $halfVisible);
 
-                    // Adjust start and end pages if near the beginning or end
                     if ($currentPage <= $halfVisible) {
                         $endPage = min($visiblePages, $totalPages);
                     } elseif ($currentPage + $halfVisible > $totalPages) {
                         $startPage = max(1, $totalPages - $visiblePages + 1);
                     }
 
-                    // Previous and next pages
                     $previousPage = ($currentPage > 1) ? $currentPage - 1 : null;
                     $nextPage = ($currentPage < $totalPages) ? $currentPage + 1 : null;
                     ?>
