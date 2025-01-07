@@ -133,4 +133,27 @@
 
         return $results;
     }
+
+    public static function searchByKeyword($themeId, $searchTerm)
+    {
+        $sql = "SELECT a.*,
+                COUNT(DISTINCT l.id) as likes_count,
+                COUNT(DISTINCT d.id) as dislikes_count,
+                COUNT(DISTINCT c.id) as comments_count
+                FROM articles a
+                LEFT JOIN likes l ON l.article_id = a.id
+                LEFT JOIN dislikes d ON d.article_id = a.id
+                LEFT JOIN comments c ON c.article_id = a.id
+                WHERE a.theme_id = :theme_id
+                AND (a.title LIKE :search_term 
+                     OR a.content LIKE :search_term)
+                GROUP BY a.id";
+        
+        self::$db->query($sql);
+        self::$db->bind(':theme_id', $themeId);
+        self::$db->bind(':search_term', '%' . $searchTerm . '%');
+        $results = self::$db->results();
+
+        return $results;
+    }
 }
