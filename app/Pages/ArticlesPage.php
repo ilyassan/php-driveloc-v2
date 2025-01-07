@@ -4,7 +4,9 @@
     {
         public function index($id)
         {
-            $this->render('/articles/index');
+            $articles = Article::getArticlesOfTheme($id);
+            
+            $this->render('/articles/index', compact('articles'));
         }
 
         public function show($id)
