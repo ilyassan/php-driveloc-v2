@@ -25,12 +25,12 @@
     $router->add('GET', '/vehicles/{id}', 'VehiclesDetailsPage@index', "client");
 
     $router->add('GET', '/reservations', 'ReservationsPage@index', "client");
-    $router->add('GET', '/blog', 'BlogThemesPage@index', "client");
-    $router->add('GET', '/blog/themes/articles/create', 'ArticlesPage@create', "client");
-    $router->add('GET', '/blog/themes/articles/{id}', 'ArticlesPage@show', "client");
-    $router->add('GET', '/blog/themes/{id}', 'ArticlesPage@index', "client");
+    $router->add('GET', '/themes', 'ThemesPage@index', "client");
+    $router->add('GET', '/themes/{id}', 'ArticlesPage@index', "client");
+    $router->add('GET', '/articles/create', 'ArticlesPage@create', "client");
+    $router->add('GET', '/articles/{id}', 'ArticlesPage@show', "client");
 
-    $router->add('GET', '/blog/favorites', 'FavoritesPage@index', "client");
+    $router->add('GET', '/favorites', 'FavoritesPage@index', "client");
 
     $router->add('POST', '/api/vehicles', 'VehiclesPage@getFilteredVehicles');
     $router->add('POST', '/api/getReservations', 'ReservationsPage@getFilteredReservations');
