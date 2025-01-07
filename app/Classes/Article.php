@@ -3,18 +3,18 @@
 
     private $id;
     private $title;
-    private $description;
+    private $content;
     private $image_name;
     private $is_published;
     private $created_at;
     private $theme_id;
     private $client_id;
 
-    public function __construct($id, $title, $description, $image_name, $is_published, $created_at, $theme_id, $client_id)
+    public function __construct($id, $title, $content, $image_name, $is_published, $created_at, $theme_id, $client_id)
     {
         $this->id = $id;
         $this->title = $title;
-        $this->description = $description;
+        $this->content = $content;
         $this->image_name = $image_name;
         $this->is_published = $is_published;
         $this->created_at = $created_at;
@@ -32,9 +32,9 @@
         return $this->title;
     }
 
-    public function getDescription()
+    public function getContent()
     {
-        return $this->description;
+        return $this->content;
     }
 
     public function getIsPublished()
@@ -62,6 +62,21 @@
         return $this->image_name;
     }
 
+    public function save()
+    {
+        $sql = "INSERT INTO articles (title, content, image_name, theme_id, client_id)
+                VALUES (:title, :content, :image_name, :theme_id, :client_id)
+                ";
+        self::$db->query($sql);
+        self::$db->bind(':title', $this->title);
+        self::$db->bind(':content', $this->content);
+        self::$db->bind(':image_name', $this->image_name);
+        self::$db->bind(':theme_id', $this->theme_id);
+        self::$db->bind(':client_id', $this->client_id);
+
+        return self::$db->execute();
+    }
+
 
     public static function find(int $id) {
         $sql = "SELECT * FROM themes
@@ -71,7 +86,7 @@
         self::$db->execute();
 
         $result = self::$db->single();
-        return new self($result->id, $result->title, $result->description, $result->image_name,  $result->is_published, $result->created_at, $result->theme_id, $result->client_id);
+        return new self($result->id, $result->title, $result->content, $result->image_name,  $result->is_published, $result->created_at, $result->theme_id, $result->client_id);
     }
 
 

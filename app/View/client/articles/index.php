@@ -27,7 +27,7 @@
                     <?= (new DateTime($article['created_at']))->format('F d, Y') ?>
                 </span>
                 <h2 class="text-xl font-bold text-gray-800 mt-2 mb-3"><?= htmlspecialchars($article['title']) ?></h2>
-                <p class="text-gray-600 line-clamp-3"><?= htmlspecialchars($article['description']) ?></p>
+                <p class="text-gray-600 line-clamp-3"><?= htmlspecialchars($article['content']) ?></p>
                 
                 <div class="mt-4 flex justify-between items-center">
                     <div class="flex items-center gap-4">

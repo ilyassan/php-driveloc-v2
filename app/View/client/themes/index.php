@@ -8,6 +8,12 @@
             </p>
         </div>
 
+        <div class="flex justify-end my-3">
+            <a href="<?= URLROOT . 'articles/create' ?>" class="bg-red-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-600 transition-colors">
+                Create Article <i class="fas fa-plus"></i>
+            </a>
+        </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <?php foreach ($themes as $theme):?>
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-shadow">
