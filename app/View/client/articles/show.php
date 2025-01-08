@@ -42,20 +42,21 @@
 
             <!-- Engagement Section -->
             <div class="border-t border-gray-200 mt-8 pt-6">
-                <div class="flex items-center gap-6">
-                    <button class="flex items-center gap-2 text-gray-500 hover:text-red-500">
-                        <i class="far fa-thumbs-up"></i> <?= $article->likes_count ?>
+                <form method="POST" class="flex items-center gap-6">
+                    <input type="hidden" name="article_id" value="<?= $article->id ?>">
+                    <button type="submit" formaction="<?= URLROOT . 'articles/like' ?>" class="<?= $isLiked ? 'text-primary' : 'text-gray-500' ?> flex items-center gap-2 hover:text-red-500">
+                        <i class="<?= $isLiked ? 'fas' : 'far' ?> fa-thumbs-up"></i> <?= $article->likes_count ?>
                     </button>
-                    <button class="flex items-center gap-2 text-gray-500 hover:text-red-500">
-                        <i class="far fa-thumbs-down"></i> <?= $article->dislikes_count ?>
+                    <button type="submit" formaction="<?= URLROOT . 'articles/dislike' ?>" class="<?= $isDisliked ? 'text-primary' : 'text-gray-500' ?> flex items-center gap-2 text-gray-500 hover:text-red-500">
+                        <i class="<?= $isDisliked ? 'fas' : 'far' ?> far fa-thumbs-down"></i> <?= $article->dislikes_count ?>
                     </button>
-                    <button class="flex items-center gap-2 text-gray-500">
+                    <button type="button" class="flex items-center gap-2 text-gray-500">
                         <i class="far fa-comment"></i> <?= count($comments) ?> Comments
                     </button>
-                    <button class="flex items-center gap-2 text-gray-500 hover:text-red-500">
+                    <button type="button" class="flex items-center gap-2 text-gray-500 hover:text-red-500">
                         <i class="far fa-share-square"></i> Share
                     </button>
-                </div>
+                </form>
             </div>
         </div>
 

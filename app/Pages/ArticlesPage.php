@@ -27,8 +27,10 @@
             $article = Article::find($id);
             $comments = Comment::getCommentsOfArticle($id);
             $isFavorite = Favorite::isArticleFavorite($id, user()->getId());
+            $isLiked = Like::isArticleLikedByUser($id, user()->getId());
+            $isDisliked = Dislike::isArticleDislikedByUser($id, user()->getId());
 
-            $this->render('/articles/show', compact('article', 'comments', 'isFavorite'));
+            $this->render('/articles/show', compact('article', 'comments', 'isFavorite', 'isLiked', 'isDisliked'));
         }
 
         public function create()
@@ -161,5 +163,69 @@
             }
 
             redirect('articles/' . $data['article_id']);
+        }
+
+
+        public function like()
+        {
+            $data = [
+                'article_id' => $_POST["article_id"]
+            ];
+
+            $errors = [
+                'article_id_err' => '' 
+            ];
+
+            if (empty($data['article_id']) || ! Article::find($data['article_id'])) {
+                $errors['article_id_err'] = "The article not found.";
+            }
+
+            if (Like::find($data['article_id'], user()->getId())) {
+                Like::remove($data["article_id"], user()->getId());
+                redirect('articles/'. $data["article_id"]);
+                return;
+            }
+
+            if (empty(array_filter($errors))) {
+
+                Dislike::remove($data["article_id"], user()->getId());
+                $like = new Like(null, $data["article_id"], user()->getId());
+                $like->save();
+            }
+    
+            flash("error", array_first_not_null_value($errors));
+            redirect('articles/'. $data["article_id"]);
+        }
+
+
+        public function dislike()
+        {
+            $data = [
+                'article_id' => $_POST["article_id"]
+            ];
+
+            $errors = [
+                'article_id_err' => '' 
+            ];
+
+            if (empty($data['article_id']) || ! Article::find($data['article_id'])) {
+                $errors['article_id_err'] = "The article not found.";
+            }
+
+            if (Dislike::find($data['article_id'], user()->getId())) {
+                Dislike::remove($data["article_id"], user()->getId());
+                redirect('articles/'. $data["article_id"]);
+                return;
+            }
+
+            if (empty(array_filter($errors))) {
+
+                Like::remove($data["article_id"], user()->getId());
+                $dislike = new Dislike(null, $data["article_id"], user()->getId());
+                $dislike->save();
+            }
+    
+            flash("error", array_first_not_null_value($errors));
+            redirect('articles/'. $data["article_id"]);
         }
     }
