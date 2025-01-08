@@ -47,12 +47,26 @@
         return $this->client_id;
     }
 
+    public function save()
+    {
+        $sql = "INSERT INTO comments (content, article_id, client_id)
+                VALUES (:content, :article_id, :client_id)
+                ";
+        self::$db->query($sql);
+        self::$db->bind(':content', $this->content);
+        self::$db->bind(':article_id', $this->article_id);
+        self::$db->bind(':client_id', $this->client_id);
+
+        return self::$db->execute();
+    }
+
 
     public static function getCommentsOfArticle(int $article_id) {
-        $sql = "SELECT *, CONCAT(u.first_name, ' ', u.last_name) as author_name
+        $sql = "SELECT c.*, CONCAT(u.first_name, ' ', u.last_name) as author_name
                 FROM comments c
                 JOIN users u ON u.id = c.client_id
-                WHERE c.article_id = :article_id";
+                WHERE c.article_id = :article_id
+                ORDER BY c.created_at DESC";
                 
         self::$db->query($sql);
         self::$db->bind(':article_id', $article_id);

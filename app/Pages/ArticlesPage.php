@@ -89,4 +89,40 @@
             flash("error", array_first_not_null_value($errors));
             redirect('articles/create');
         }
+
+        public function createComment()
+        {
+            $data = [
+                'comment' => isset($_POST['comment']) ? trim(filter_var($_POST['comment'], FILTER_SANITIZE_FULL_SPECIAL_CHARS)) : '',
+                'theme_id' => $_POST["theme_id"]
+            ];
+
+            $errors = [
+                'comment_err' => '',
+                'theme_id_err' => '' 
+            ];
+
+            if (empty($data['comment'])) {
+                $errors['comment_err'] = "Cannot add a comment without any content.";
+            }
+
+            if (empty($data['theme_id']) || ! Article::find($data['theme_id'])) {
+                $errors['theme_id_err'] = "The article not found.";
+            }
+
+            if (empty(array_filter($errors))) {
+
+                $comment = new Comment(null, $data["comment"], null, $data["theme_id"], user()->getId());
+
+                if ($comment->save()) {
+                    flash("success", "Your comment has been added successfully!");
+                    redirect('articles/'. $data["theme_id"]);
+                } else {
+                    $errors['general_err'] = 'Something went wrong while adding your comment.';
+                }
+            }
+    
+            flash("error", array_first_not_null_value($errors));
+            redirect('articles/'. $data["theme_id"]);
+        }
     }
