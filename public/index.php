@@ -33,6 +33,9 @@
     $router->add('POST', '/articles/store', 'ArticlesPage@store', "client");
     $router->add('GET', '/articles/{id}', 'ArticlesPage@show', "client");
 
+    $router->add('POST', '/articles/like', 'ArticlesPage@like', "client");
+    $router->add('POST', '/articles/dislike', 'ArticlesPage@dislike', "client");
+
     $router->add('GET', '/favorites', 'FavoritesPage@index', "client");
     
     $router->add('POST', '/comments/create', 'ArticlesPage@createComment', "client");

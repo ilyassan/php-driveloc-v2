@@ -78,19 +78,20 @@
                     </p>
 
                     <div class="mt-4 flex justify-between items-center">
-                        <div class="flex items-center gap-4">
-                            <span class="flex items-center gap-1 text-gray-500">
-                                <i class="far fa-thumbs-up"></i> <?= $article['likes_count'] ?>
-                            </span>
-                            <span class="flex items-center gap-1 text-gray-500">
-                                <i class="far fa-thumbs-down"></i> <?= $article['dislikes_count'] ?>
-                            </span>
+                    <form method="POST" class="flex items-center gap-4 mb-2">
+                        <input type="hidden" name="article_id" value="<?= $article['id'] ?>">
+                        <button type="submit" formaction="<?= URLROOT . 'articles/like' ?>" class="<?= $article['is_liked'] ? 'text-primary' : 'text-gray-500' ?> flex items-center gap-2 hover:text-red-500">
+                            <i class="<?= $article['is_liked'] ? 'fas' : 'far' ?> fa-thumbs-up"></i> <?= $article["likes_count"] ?>
+                        </button>
+                        <button type="submit" formaction="<?= URLROOT . 'articles/dislike' ?>" class="<?= $article['is_disliked'] ? 'text-primary' : 'text-gray-500' ?> flex items-center gap-2 text-gray-500 hover:text-red-500">
+                            <i class="<?= $article['is_disliked'] ? 'fas' : 'far' ?> far fa-thumbs-down"></i> <?= $article["dislikes_count"] ?>
+                        </button>
                             <span class="flex items-center gap-1 text-gray-500">
                                 <i class="far fa-comment"></i> <?= $article['comments_count'] ?>
                             </span>
                         </div>
                         <a href="<?= URLROOT . 'articles/' . $article["id"] ?>" class="text-red-500 hover:text-red-600 font-medium">Read More →</a>
-                    </div>
+                    </form>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
