@@ -4,6 +4,8 @@
     {
         public function index()
         {
-            $this->render('/favorites/index');
+            $articles = Article::favoritesOfClient(user()->getId());
+
+            $this->render('/favorites/index', compact('articles'));
         }
     }

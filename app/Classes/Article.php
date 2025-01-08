@@ -139,6 +139,35 @@
         return $result->count; 
     }
 
+    public static function favoritesOfClient($client_id)
+    {
+        $sql = "SELECT
+                    a.*,
+                    COUNT(DISTINCT l.id) as likes_count,
+                    COUNT(DISTINCT d.id) as dislikes_count,
+                    COUNT(DISTINCT c.id) as comments_count,
+                    li.article_id as is_liked,
+                    di.article_id as is_disliked,
+                    f.article_id as is_favorite
+                FROM articles a
+                LEFT JOIN likes l ON l.article_id = a.id
+                LEFT JOIN likes li ON li.article_id = a.id AND li.client_id = :client_id
+                LEFT JOIN dislikes d ON d.article_id = a.id
+                LEFT JOIN dislikes di ON di.article_id = a.id AND di.client_id = :client_id
+                LEFT JOIN comments c ON c.article_id = a.id
+                LEFT JOIN favorites f ON f.article_id = a.id AND f.client_id = :client_id
+                WHERE f.client_id IS NOT NULL
+                GROUP BY a.id";
+
+        
+        self::$db->query($sql);
+        self::$db->bind(':client_id', $client_id);
+    
+        $results = self::$db->results();
+    
+        return $results;
+    }
+
 
     public static function paginate($themeId, int $page, int $articlesPerPage, $searchTerm = '')
     {

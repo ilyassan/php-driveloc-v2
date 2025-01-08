@@ -29,14 +29,17 @@
     $router->add('GET', '/themes', 'ThemesPage@index', "client");
     $router->add('GET', '/themes/{id}', 'ArticlesPage@index', "client");
 
+    $router->add('GET', '/articles/favorites', 'FavoritesPage@index', "client");
+
     $router->add('GET', '/articles/create', 'ArticlesPage@create', "client");
     $router->add('POST', '/articles/store', 'ArticlesPage@store', "client");
     $router->add('GET', '/articles/{id}', 'ArticlesPage@show', "client");
 
     $router->add('POST', '/articles/like', 'ArticlesPage@like', "client");
     $router->add('POST', '/articles/dislike', 'ArticlesPage@dislike', "client");
-
+    
     $router->add('GET', '/favorites', 'FavoritesPage@index', "client");
+    $router->add('POST', '/articles/addToFavorite', 'ArticlesPage@addToFavorite', "client");
     
     $router->add('POST', '/comments/create', 'ArticlesPage@createComment', "client");
     $router->add('POST', '/comments/delete', 'ArticlesPage@deleteComment', "client");
