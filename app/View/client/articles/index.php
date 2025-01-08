@@ -57,6 +57,13 @@
                 <p class="text-gray-600">No articles found.</p>
             </div>
         <?php else: ?>
+            <?php
+                function getExcerpt($content, $length = 100)
+                {
+                    $plainText = strip_tags($content);
+                    return strlen($plainText) > $length ? substr($plainText, 0, $length) . '...' : $plainText;
+                }
+            ?>
             <?php foreach ($articles as $article): ?>
                 <div class="bg-white rounded-lg shadow-lg p-6 relative">
                     <button class="absolute top-6 right-6 text-gray-400 hover:text-red-500">
@@ -66,8 +73,10 @@
                         <?= (new DateTime($article['created_at']))->format('F d, Y') ?>
                     </span>
                     <h2 class="text-xl font-bold text-gray-800 mt-2 mb-3"><?= htmlspecialchars($article['title']) ?></h2>
-                    <p class="text-gray-600 line-clamp-3"><?= htmlspecialchars($article['content']) ?></p>
-                    
+                    <p class="text-gray-600 line-clamp-3">
+                        <?= htmlspecialchars(getExcerpt($article['content'], 100)); ?>
+                    </p>
+
                     <div class="mt-4 flex justify-between items-center">
                         <div class="flex items-center gap-4">
                             <span class="flex items-center gap-1 text-gray-500">
@@ -80,7 +89,7 @@
                                 <i class="far fa-comment"></i> <?= $article['comments_count'] ?>
                             </span>
                         </div>
-                        <a href="#" class="text-red-500 hover:text-red-600 font-medium">Read More →</a>
+                        <a href="<?= URLROOT . 'articles/' . $article["id"] ?>" class="text-red-500 hover:text-red-600 font-medium">Read More →</a>
                     </div>
                 </div>
             <?php endforeach; ?>
