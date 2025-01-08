@@ -60,12 +60,38 @@
         return self::$db->execute();
     }
 
+    public function delete()
+    {
+        $sql = "UPDATE comments
+                SET is_deleted = 1
+                WHERE id = :id";
+
+        self::$db->query($sql);
+        self::$db->bind(':id', $this->id);
+
+        return self::$db->execute();
+    }
+
+
+    public static function find(int $id)
+    {
+        $sql = "SELECT *
+                FROM comments c
+                WHERE c.id = :id";
+        
+        self::$db->query($sql);
+        self::$db->bind(':id', $id);
+
+        $result = self::$db->single();
+
+        return new self($result->id, $result->content, $result->is_deleted, $result->article_id, $result->client_id);
+    }
 
     public static function getCommentsOfArticle(int $article_id) {
-        $sql = "SELECT c.*, CONCAT(u.first_name, ' ', u.last_name) as author_name
+        $sql = "SELECT c.*, u.id as author_id ,CONCAT(u.first_name, ' ', u.last_name) as author_name
                 FROM comments c
                 JOIN users u ON u.id = c.client_id
-                WHERE c.article_id = :article_id
+                WHERE c.article_id = :article_id AND c.is_deleted = 0
                 ORDER BY c.created_at DESC";
                 
         self::$db->query($sql);

@@ -125,4 +125,41 @@
             flash("error", array_first_not_null_value($errors));
             redirect('articles/'. $data["theme_id"]);
         }
+
+        public function deleteComment()
+        {
+
+            $data = [
+                'comment_id' => $_POST['comment_id'] ?? null,
+                'article_id' => $_POST['article_id'] ?? null
+            ];
+
+            $errors = [
+                'comment_id_err' => '',
+                'authorization_err' => '',
+                'general_err' => ''
+            ];
+
+            $comment = Comment::find($data['comment_id']);
+            if (!$comment) {
+                $errors['comment_id_err'] = "Comment not found.";
+            }
+
+            // Check if user is authorized to delete the comment
+            if ($comment && $comment->getClientId() !== user()->getId()) {
+                $errors['authorization_err'] = "You are not authorized to delete this comment.";
+            }
+
+            if (empty(array_filter($errors))) {
+                if ($comment->delete()) {
+                    flash("success", "Comment deleted successfully!");
+                } else {
+                    flash("error", "Something went wrong while deleting the comment.");
+                }
+            } else {
+                flash("error", array_first_not_null_value($errors));
+            }
+
+            redirect('articles/' . $data['article_id']);
+        }
     }
