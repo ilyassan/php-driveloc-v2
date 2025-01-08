@@ -5,9 +5,12 @@
                 <span class="text-red-500 text-sm font-medium">
                     <?= (new DateTime($article->created_at))->format('F d, Y') ?>
                 </span>
-                <button class="text-primary">
-                    <i class="<?= $isFavorite ? 'fas': 'far' ?> fa-bookmark text-xl"></i>
-                </button>
+                <form action="<?= URLROOT . 'articles/addToFavorite' ?>" method="POST">
+                    <input type="hidden" name="article_id" value="<?= $article->id ?>">
+                    <button class="text-primary">
+                        <i class="<?= $isFavorite ? 'fas': 'far' ?> fa-bookmark text-xl"></i>
+                    </button>
+                </form>
             </div>
             <h1 class="text-3xl font-bold text-gray-800 mb-4"><?= $article->title ?></h1>
             <div class="flex items-center gap-6 text-sm text-gray-500 mb-8">

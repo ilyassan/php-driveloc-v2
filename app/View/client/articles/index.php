@@ -66,9 +66,13 @@
             ?>
             <?php foreach ($articles as $article): ?>
                 <div class="bg-white rounded-lg shadow-lg p-6 relative">
-                    <button class="absolute top-6 right-6 text-primary">
-                        <i class="<?= $article['is_favorite'] ? 'fas': 'far'?> fa-bookmark text-xl"></i>
-                    </button>
+                    <form action="<?= URLROOT . 'articles/addToFavorite' ?>" method="POST">
+                        <input type="hidden" name="article_id" value="<?= $article['id'] ?>">
+                        <button class="absolute top-6 right-6 text-primary">
+                            <i class="<?= $article['is_favorite'] ? 'fas': 'far'?> fa-bookmark text-xl"></i>
+                        </button>
+                    </form>
+                    
                     <span class="text-red-500 text-sm font-medium">
                         <?= (new DateTime($article['created_at']))->format('F d, Y') ?>
                     </span>

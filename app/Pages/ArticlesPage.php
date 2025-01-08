@@ -228,4 +228,37 @@
             flash("error", array_first_not_null_value($errors));
             redirect('articles/'. $data["article_id"]);
         }
+
+        public function addToFavorite()
+        {
+            $data = [
+                'article_id' => $_POST["article_id"]
+            ];
+
+            $errors = [
+                'article_id_err' => '' 
+            ];
+
+            if (empty($data['article_id']) || ! Article::find($data['article_id'])) {
+                $errors['article_id_err'] = "The article not found.";
+            }
+
+            if (Favorite::find($data['article_id'], user()->getId())) {
+                Favorite::remove($data["article_id"], user()->getId());
+                redirect('articles/favorites');
+                return;
+            }
+
+            if (empty(array_filter($errors))) {
+
+                $favorite = new Favorite(null, $data["article_id"], user()->getId());
+                if ($favorite->save()) {
+                    flash("success", "Article added to your favorites.");
+                    redirect('articles/favorites');
+                }
+            }
+    
+            flash("error", array_first_not_null_value($errors));
+            redirect('articles/favorites');
+        }
     }
