@@ -66,8 +66,8 @@
             ?>
             <?php foreach ($articles as $article): ?>
                 <div class="bg-white rounded-lg shadow-lg p-6 relative">
-                    <button class="absolute top-6 right-6 text-gray-400 hover:text-red-500">
-                        <i class="far fa-bookmark text-xl"></i>
+                    <button class="absolute top-6 right-6 text-primary">
+                        <i class="<?= $article['is_favorite'] ? 'fas': 'far'?> fa-bookmark text-xl"></i>
                     </button>
                     <span class="text-red-500 text-sm font-medium">
                         <?= (new DateTime($article['created_at']))->format('F d, Y') ?>
