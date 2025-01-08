@@ -113,7 +113,7 @@
                 LEFT JOIN dislikes d ON d.article_id = a.id
                 JOIN users u ON u.id = a.client_id
                 WHERE a.id = :id";
-                
+
         self::$db->query($sql);
         self::$db->bind(':id', $id);
         self::$db->execute();
@@ -145,14 +145,17 @@
         $offset = ($page - 1) * $articlesPerPage;
         
         // Base SQL query
-        $sql = "SELECT a.*,
-                COUNT(DISTINCT l.id) as likes_count,
-                COUNT(DISTINCT d.id) as dislikes_count,
-                COUNT(DISTINCT c.id) as comments_count
+        $sql = "SELECT
+                    a.*,
+                    COUNT(DISTINCT l.id) as likes_count,
+                    COUNT(DISTINCT d.id) as dislikes_count,
+                    COUNT(DISTINCT c.id) as comments_count,
+                    f.article_id as is_favorite
                 FROM articles a
                 LEFT JOIN likes l ON l.article_id = a.id
                 LEFT JOIN dislikes d ON d.article_id = a.id
                 LEFT JOIN comments c ON c.article_id = a.id
+                LEFT JOIN favorites f ON f.article_id = a.id AND f.client_id = :client_id
                 WHERE a.theme_id = :theme_id";
         
         // Add search condition only if search term is not empty
@@ -166,6 +169,7 @@
         
         self::$db->query($sql);
         self::$db->bind(':theme_id', $themeId);
+        self::$db->bind(':client_id', user()->getId());
         self::$db->bind(':offset', $offset);
         self::$db->bind(':articles_per_page', $articlesPerPage);
         
