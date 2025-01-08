@@ -64,10 +64,11 @@
             <h3 class="text-xl font-bold text-gray-800 mb-6">Comments (<?= count($comments) ?>)</h3>
             
             <!-- Comment Form -->
-            <div class="mb-8">
-                <textarea class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" rows="3" placeholder="Add a comment..."></textarea>
+            <form action="<?= URLROOT . 'comments/create' ?>" method="POST" class="mb-8">
+                <textarea name="comment" class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" rows="3" placeholder="Add a comment..."></textarea>
+                <input type="hidden" name="theme_id" value="<?= $article->id ?>">
                 <button class="mt-2 bg-red-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-600">Post Comment</button>
-            </div>
+            </form>
 
             <!-- Comments List -->
             <div class="space-y-6">

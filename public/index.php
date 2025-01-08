@@ -34,6 +34,8 @@
     $router->add('GET', '/articles/{id}', 'ArticlesPage@show', "client");
 
     $router->add('GET', '/favorites', 'FavoritesPage@index', "client");
+    
+    $router->add('POST', '/comments/create', 'ArticlesPage@createComment', "client");
 
     $router->add('POST', '/api/vehicles', 'VehiclesPage@getFilteredVehicles');
     $router->add('POST', '/api/getReservations', 'ReservationsPage@getFilteredReservations');
