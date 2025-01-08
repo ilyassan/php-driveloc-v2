@@ -74,13 +74,26 @@
             <div class="space-y-6">
                 <?php foreach($comments as $i => $comment): ?>
                     <div class="<?= $i == 0 ? '': 'border-t pt-6' ?> border-gray-200">
-                        <div class="flex items-center gap-3 mb-3">
-                            <i class="fas fa-user-circle text-4xl text-gray-600"></i>
-                            <div>
-                                <h4 class="font-medium text-gray-800"><?= $comment["author_name"] ?></h4>
-                                <span class="text-sm text-gray-500"><?= getTimeAgoFromDate($comment['created_at']) ?></span>
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-center gap-3 mb-3">
+                                <i class="fas fa-user-circle text-4xl text-gray-600"></i>
+                                <div>
+                                    <h4 class="font-medium text-gray-800"><?= $comment["author_name"] . ($comment['author_id'] === user()->getId() ? " ( You )" : "") ?></h4>
+                                    <span class="text-sm text-gray-500"><?= getTimeAgoFromDate($comment['created_at']) ?></span>
+                                </div>
                             </div>
+                            
+                            <?php if ($comment['author_id'] === user()->getId()): ?>
+                                <form action="<?= URLROOT . 'comments/delete' ?>" method="POST" class="delete-comment-form">
+                                    <input type="hidden" name="comment_id" value="<?= $comment['id'] ?>">
+                                    <input type="hidden" name="article_id" value="<?= $article->id ?>">
+                                    <button type="submit" class="text-sm text-red-500 hover:text-red-700">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </form>
+                            <?php endif; ?>
                         </div>
+                        
                         <p class="text-gray-600"><?= $comment["content"] ?></p>
                         <div class="flex items-center gap-4 mt-3">
                             <button class="text-sm text-gray-500 hover:text-red-500">Reply</button>
