@@ -103,14 +103,23 @@
 
 
     public static function find(int $id) {
-        $sql = "SELECT * FROM themes
-                WHERE id = :id";
+        $sql = "SELECT
+                    a.*,
+                    CONCAT(u.first_name, ' ', u.last_name) as author_name,
+                    COUNT(DISTINCT l.id) as likes_count,
+                    COUNT(DISTINCT d.id) as dislikes_count
+                FROM articles a
+                LEFT JOIN likes l ON l.article_id = a.id
+                LEFT JOIN dislikes d ON d.article_id = a.id
+                JOIN users u ON u.id = a.client_id
+                WHERE a.id = :id";
+                
         self::$db->query($sql);
         self::$db->bind(':id', $id);
         self::$db->execute();
 
         $result = self::$db->single();
-        return new self($result->id, $result->title, $result->content, $result->image_name,  $result->is_published, $result->created_at, $result->theme_id, $result->client_id);
+        return $result;
     }
 
 

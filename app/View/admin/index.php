@@ -157,25 +157,7 @@
                             <div>
                                 <p class="text-gray-800"><?= htmlspecialchars($activity['message']) ?></p>
                                 <p class="text-sm text-gray-500">
-                                    <?php
-                                        $createdAt = new DateTime($activity['created_at']);
-                                        $now = new DateTime();
-                                        $interval = $now->diff($createdAt);
-
-                                        if ($interval->y > 0) {
-                                            echo htmlspecialchars($interval->y . ' year' . ($interval->y > 1 ? 's' : '') . ' ago');
-                                        } elseif ($interval->m > 0) {
-                                            echo htmlspecialchars($interval->m . ' month' . ($interval->m > 1 ? 's' : '') . ' ago');
-                                        } elseif ($interval->d > 0) {
-                                            echo htmlspecialchars($interval->d . ' day' . ($interval->d > 1 ? 's' : '') . ' ago');
-                                        } elseif ($interval->h > 0) {
-                                            echo htmlspecialchars($interval->h . ' hour' . ($interval->h > 1 ? 's' : '') . ' ago');
-                                        } elseif ($interval->i > 0) {
-                                            echo htmlspecialchars($interval->i . ' minute' . ($interval->i > 1 ? 's' : '') . ' ago');
-                                        } else {
-                                            echo 'Just now';
-                                        }
-                                    ?>
+                                    <?= getTimeAgoFromDate($activity['created_at']) ?>
                                 </p>
                             </div>
                         </div>

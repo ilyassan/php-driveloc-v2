@@ -24,7 +24,11 @@
 
         public function show($id)
         {
-            $this->render('/articles/show');
+            $article = Article::find($id);
+            $comments = Comment::getCommentsOfArticle($id);
+            $isFavorite = Favorite::isArticleFavorite($id, user()->getId());
+
+            $this->render('/articles/show', compact('article', 'comments', 'isFavorite'));
         }
 
         public function create()
@@ -37,12 +41,10 @@
 
         public function store()
         {
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
             $data = [
-                'title' => trim($_POST['title']),
-                'theme_id' => trim($_POST['theme_id']),
-                'content' => trim($_POST['content']),
+                'title' => isset($_POST['title']) ? trim(filter_var($_POST['title'], FILTER_SANITIZE_FULL_SPECIAL_CHARS)) : '',
+                'theme_id' => isset($_POST['theme_id']) ? trim(filter_var($_POST['theme_id'], FILTER_SANITIZE_FULL_SPECIAL_CHARS)) : '',
+                'content' => isset($_POST['content']) ? trim($_POST['content']) : '',
                 'tag_ids' => isset($_POST['tag_ids']) ? $_POST['tag_ids'] : []
             ];
     
