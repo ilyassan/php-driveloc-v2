@@ -75,4 +75,16 @@
             flash("error", array_first_not_null_value($errors));
             redirect('themes');
         }
+
+        public function delete()
+        {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $id = $_POST['theme_id'];
+            
+            $theme = Theme::find($id);
+            $theme->delete();
+
+            flash("success", "Theme '" . $theme->getName() . "' deleted successfully.");
+            redirect("themes");
+        }
     }

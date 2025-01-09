@@ -67,7 +67,7 @@
                     
                     <!-- Delete Button -->
                     <button 
-                        onclick="confirmDelete('Light Theme')"
+                        onclick="confirmDelete('<?= $theme['name'] ?>', '<?= $theme['id'] ?>')"
                         class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:text-red-600"
                     >
                         <i class="fas fa-times"></i>
@@ -91,7 +91,7 @@
             >
                 Cancel
             </button>
-            <form action="#" method="POST">
+            <form action="<?= URLROOT . 'themes/delete' ?>" method="POST">
                 <input id="theme_id" type="hidden" name="theme_id" value="">
                 <button
                     type="submit"
@@ -124,8 +124,9 @@
 
     let themeToDelete = '';
 
-    function confirmDelete(theme) {
+    function confirmDelete(theme, id) {
         themeToDelete = theme;
+        document.getElementById('theme_id').value = id;
         document.getElementById('themeToDelete').textContent = theme;
         document.getElementById('deleteModal').classList.remove('hidden');
         document.getElementById('deleteModal').classList.add('flex');
