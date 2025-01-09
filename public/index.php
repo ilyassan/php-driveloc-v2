@@ -71,6 +71,7 @@
     $router->add('GET', '/articles/{id}', 'ArticlesAdminPage@show', "admin");
 
     $router->add('GET', '/tags', 'TagsPage@index', "admin");
+    $router->add('POST', '/tags/store', 'TagsPage@store', "admin");
 
     $router->add('GET', '/users', 'UsersPage@index', "admin");
     

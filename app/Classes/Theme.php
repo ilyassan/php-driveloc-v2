@@ -43,10 +43,10 @@
     public function save()
     {
         $sql = "INSERT INTO themes (name, description, image_name)
-                VALUES (:title, :description, :image_name)
+                VALUES (:name, :description, :image_name)
                 ";
         self::$db->query($sql);
-        self::$db->bind(':title', $this->name);
+        self::$db->bind(':name', $this->name);
         self::$db->bind(':description', $this->description);
         self::$db->bind(':image_name', $this->image_name);
 

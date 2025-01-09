@@ -2,7 +2,7 @@
     <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
         <h3 class="text-lg font-semibold text-gray-800 mb-4">Add New Tag</h3>
         
-        <form action="#" method="POST" class="flex flex-col gap-4">
+        <form action="<?= URLROOT . 'tags/store' ?>" method="POST" class="flex flex-col gap-4">
             <!-- Tag Name Input -->
             <div class="flex-1">
                 <label for="tag_name" class="block mb-2 text-sm font-medium text-gray-700">
