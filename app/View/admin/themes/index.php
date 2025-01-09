@@ -2,13 +2,13 @@
     <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
         <h3 class="text-lg font-semibold text-gray-800 mb-4">Add New Blog Theme</h3>
         
-        <form action="#" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
+        <form action="<?= URLROOT . 'themes/store' ?>" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
             <!-- Image Upload -->
             <div class="flex justify-center mb-4">
                 <div class="flex relative justify-center w-96 h-60">
                     <img id="theme-image" class="border-2 border-gray-300 rounded-lg w-full h-full" src="../../assets/images/default.jpg" alt="Theme">
                     <label for="theme_image" class="cursor-pointer border-2 border-gray-300 rounded-lg absolute w-full h-full bg-gray-50 text-gray-500 flex justify-center items-center">Upload an Image</label>
-                    <input type="file" id="theme_image" name="theme_image" class="hidden" accept="image/gif, image/jpeg, image/png">
+                    <input type="file" id="theme_image" name="image" class="hidden" accept="image/gif, image/jpeg, image/png">
                 </div>
             </div>
 
