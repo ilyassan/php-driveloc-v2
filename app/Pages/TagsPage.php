@@ -43,4 +43,16 @@
             flash("error", array_first_not_null_value($errors));
             redirect("tags");
         }
+
+        public function delete()
+        {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $id = $_POST['tag_id'];
+            
+            $tag = Tag::find($id);
+            $tag->delete();
+
+            flash("success", "Tag '" . $tag->getName() . "' deleted successfully.");
+            redirect("tags");
+        }
     }

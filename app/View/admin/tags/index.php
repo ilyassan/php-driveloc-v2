@@ -87,7 +87,7 @@
             >
                 Cancel
             </button>
-            <form action="#" method="POST">
+            <form action="<?= URLROOT . 'tags/delete' ?>" method="POST">
                 <input id="tag_id" type="hidden" name="tag_id" value="">
                 <button
                     type="submit"
