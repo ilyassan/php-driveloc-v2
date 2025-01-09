@@ -73,6 +73,7 @@
 
     $router->add('GET', '/tags', 'TagsPage@index', "admin");
     $router->add('POST', '/tags/store', 'TagsPage@store', "admin");
+    $router->add('POST', '/tags/delete', 'TagsPage@delete', "admin");
 
     $router->add('GET', '/users', 'UsersPage@index', "admin");
     
