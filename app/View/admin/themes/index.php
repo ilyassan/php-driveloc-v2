@@ -52,50 +52,28 @@
         <div class="flex justify-between items-center mb-6">
             <h3 class="text-lg font-semibold text-gray-800">Blog Themes</h3>
             <span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">
-                3 Themes
+                <?= count($themes) ?> Themes
             </span>
         </div>
 
         <!-- Themes Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div class="group shadow-md relative bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
-                <h4 class="text-gray-700 font-medium">Light Theme</h4>
-                <p class="text-sm text-gray-500">A light theme with minimal design elements.</p>
-                
-                <!-- Delete Button -->
-                <button 
-                    onclick="confirmDelete('Light Theme')"
-                    class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:text-red-600"
-                >
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-
-            <div class="group shadow-md relative bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
-                <h4 class="text-gray-700 font-medium">Dark Theme</h4>
-                <p class="text-sm text-gray-500">A dark theme with modern aesthetics.</p>
-                
-                <!-- Delete Button -->
-                <button 
-                    onclick="confirmDelete('Dark Theme')"
-                    class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:text-red-600"
-                >
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-
-            <div class="group shadow-md relative bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
-                <h4 class="text-gray-700 font-medium">Colorful Theme</h4>
-                <p class="text-sm text-gray-500">A vibrant and colorful theme perfect for creativity.</p>
-                
-                <!-- Delete Button -->
-                <button 
-                    onclick="confirmDelete('Colorful Theme')"
-                    class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:text-red-600"
-                >
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
+            <?php foreach ($themes as $theme):?>
+                <div class="group shadow-md relative bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+                    <h4 class="text-gray-700 font-medium"><?= $theme['name'] ?></h4>
+                    <p class="text-sm text-gray-500">
+                        <?= $theme['description'] ?>
+                    </p>
+                    
+                    <!-- Delete Button -->
+                    <button 
+                        onclick="confirmDelete('Light Theme')"
+                        class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:text-red-600"
+                    >
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            <?php endforeach;?>
         </div>
     </div>
 </section>

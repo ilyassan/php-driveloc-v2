@@ -4,6 +4,9 @@
     {
         public function index()
         {
-            $this->render('/themes/index');
+
+            $themes = Theme::all();
+
+            $this->render('/themes/index', compact('themes'));
         }
     }
