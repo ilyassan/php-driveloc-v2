@@ -21,15 +21,26 @@
     }
 
 
+    public function save()
+    {
+        $sql = "INSERT INTO tags (name)
+                VALUES (:name)
+                ";
+        self::$db->query($sql);
+        self::$db->bind(':name', $this->name);
+
+        return self::$db->execute();
+    }
+
     public static function find(int $id) {
-        $sql = "SELECT * FROM themes
+        $sql = "SELECT * FROM tags
                 WHERE id = :id";
         self::$db->query($sql);
         self::$db->bind(':id', $id);
         self::$db->execute();
 
         $result = self::$db->single();
-        return new self($result->id, $result->name, $result->description);
+        return new self($result->id, $result->name);
     }
     
     public static function all()
