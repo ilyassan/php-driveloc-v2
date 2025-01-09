@@ -62,7 +62,7 @@
                 >
                     Cancel
                 </button>
-                <form action="<?= htmlspecialchars(URLROOT . 'article/delete') ?>" method="POST">
+                <form action="<?= htmlspecialchars(URLROOT . 'articles/delete') ?>" method="POST">
                     <input id="article_id" type="hidden" name="article_id" value="">
                     <button
                         type="submit"

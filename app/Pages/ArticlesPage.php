@@ -24,7 +24,7 @@
 
         public function show($id)
         {
-            $article = Article::find($id);
+            $article = Article::findFullDetails($id);
             $comments = Comment::getCommentsOfArticle($id);
             $isFavorite = Favorite::isArticleFavorite($id, user()->getId());
             $isLiked = Like::isArticleLikedByUser($id, user()->getId());
