@@ -4,9 +4,13 @@
     {
         public function index()
         {
-            $articles = Article::all();
+            $keyword = isset($_GET['search']) ? trim($_GET['search']) : '';
+            $theme_id = isset($_GET['theme_id']) ? trim($_GET['theme_id']) : null;
 
-            $this->render('/articles/index', compact('articles'));
+            $articles = Article::all($keyword, $theme_id);
+            $themes = Theme::all();
+
+            $this->render('/articles/index', compact('articles', 'themes'));
         }
 
         public function show($id)

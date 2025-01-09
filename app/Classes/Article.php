@@ -142,10 +142,28 @@
         return $result;
     }
 
-    public static function all()
+    public static function all($keyword = '', $theme_id = '')
     {
-        $sql = "SELECT * FROM articles";
+        $sql = "SELECT * FROM articles WHERE 1=1";
+    
+        if (!empty($keyword)) {
+            $sql .= " AND (title LIKE :keyword 
+                     OR content LIKE :keyword)";
+        }
+        
+        if (!empty($theme_id)) {
+            $sql .= " AND theme_id = :theme_id";
+        }
+    
         self::$db->query($sql);
+    
+        if (!empty($keyword)) {
+            self::$db->bind(':keyword', '%' . $keyword . '%');
+        }
+        
+        if (!empty($theme_id)) {
+            self::$db->bind(':theme_id', $theme_id);
+        }
     
         $results = self::$db->results();
     
