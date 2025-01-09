@@ -67,6 +67,8 @@
     $router->add('POST', '/themes/delete', 'ThemesAdminPage@delete', "admin");
 
     $router->add('GET', '/articles', 'ArticlesAdminPage@index', "admin");
+    $router->add('POST', '/articles/delete', 'ArticlesAdminPage@delete', "admin");
+
     $router->add('GET', '/articles/pending', 'PendingArticlesPage@index', "admin");
     $router->add('GET', '/articles/pending/{id}', 'PendingArticlesPage@show', "admin");
     $router->add('GET', '/articles/{id}', 'ArticlesAdminPage@show', "admin");

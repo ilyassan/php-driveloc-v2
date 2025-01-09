@@ -81,6 +81,14 @@
             return false;
         }
     }
+    
+    public function delete()
+    {
+        $sql = "DELETE FROM articles WHERE id = :id";
+        self::$db->query($sql);
+        self::$db->bind(':id', $this->id);
+        self::$db->execute();
+    }
 
     public function attachTags($ids)
     {
@@ -103,6 +111,18 @@
 
 
     public static function find(int $id) {
+        $sql = "SELECT * FROM articles
+                WHERE id = :id";
+
+        self::$db->query($sql);
+        self::$db->bind(':id', $id);
+        self::$db->execute();
+
+        $result = self::$db->single();
+        return new self($result->id, $result->title, $result->content, $result->image_name, $result->is_published, $result->created_at, $result->theme_id, $result->client_id);
+    }
+
+    public static function findFullDetails(int $id) {
         $sql = "SELECT
                     a.*,
                     CONCAT(u.first_name, ' ', u.last_name) as author_name,
