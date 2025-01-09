@@ -1,8 +1,8 @@
-<main class="container mx-auto py-12">
+<main class="p-6 mx-auto">
     <!-- Theme Header -->
     <div class="mb-8">
         <h1 class="text-4xl font-bold text-gray-800">Manage Articles</h1>
-        <p class="text-gray-600 mt-2">24 articles</p>
+        <p class="text-gray-600 mt-2"><?= count($articles) ?> articles</p>
     </div>
 
     <!-- Search and Filter Bar -->
@@ -32,60 +32,81 @@
 
     <!-- Articles Grid -->
     <div id="articlesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Example Article Cards will appear here based on filter -->
-        <!-- Article Card 1 -->
-        <div class="bg-white rounded-lg shadow-lg p-6 relative article bmw">
-            <button class="absolute top-6 right-6 text-red-500" onclick="deleteArticle(1)">
-                <i class="fas fa-trash-alt text-xl"></i>
-            </button>
-            <span class="text-red-500 text-sm font-medium">June 15, 2024</span>
-            <h2 class="text-xl font-bold text-gray-800 mt-2 mb-3">The New BMW M3: A Perfect Blend of Power and Luxury</h2>
-            <p class="text-gray-600 line-clamp-3">Experience the thrill of BMW's latest masterpiece...</p>
-            <div class="mt-4 flex justify-between items-center">
-                <a href="#" class="text-red-500 hover:text-red-600 font-medium">Read More →</a>
+        <?php foreach ($articles as $article): ?>
+            <div class="bg-white rounded-lg shadow-lg p-6 relative article bmw">
+                <button class="absolute top-6 right-6 text-red-500" onclick="confirmDelete('<?= $article['title'] ?>', '<?= $article['id'] ?>')">
+                    <i class="fas fa-trash-alt text-xl"></i>
+                </button>
+                <span class="text-red-500 text-sm font-medium">
+                    <?= (new DateTime($article['created_at']))->format('F d, Y') ?>
+                </span>
+                <h2 class="text-xl font-bold text-gray-800 mt-2 mb-3"><?= htmlspecialchars($article['title']) ?></h2>
+                <p class="text-gray-600 line-clamp-3"><?= htmlspecialchars(getExcerpt($article['content'], 100)); ?></p>
+                <div class="mt-4 flex justify-between items-center">
+                    <a href="<?= URLROOT . 'articles/' . $article['id'] ?>" class="text-red-500 hover:text-red-600 font-medium">Read More →</a>
+                </div>
             </div>
-        </div>
-
-        <!-- Article Card 2 -->
-        <div class="bg-white rounded-lg shadow-lg p-6 relative article tesla">
-            <button class="absolute top-6 right-6 text-red-500" onclick="deleteArticle(2)">
-                <i class="fas fa-trash-alt text-xl"></i>
-            </button>
-            <span class="text-red-500 text-sm font-medium">June 14, 2024</span>
-            <h2 class="text-xl font-bold text-gray-800 mt-2 mb-3">Tesla Model S vs Porsche Taycan: Electric Giants Clash</h2>
-            <p class="text-gray-600 line-clamp-3">A detailed comparison of two leading electric vehicles...</p>
-            <div class="mt-4 flex justify-between items-center">
-                <a href="#" class="text-red-500 hover:text-red-600 font-medium">Read More →</a>
-            </div>
-        </div>
-
-        <!-- More Article Cards -->
+        <?php endforeach; ?>
     </div>
 
-    <!-- Load More Button -->
-    <div class="mt-8 text-center">
-        <button class="bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-50">
-            Load More Articles
-        </button>
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-sm mx-4">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Delete Category</h3>
+            <p class="text-gray-600 mb-6">Are you sure you want to delete "<span id="articleToDelete"></span>"? This action cannot be undone.</p>
+            
+            <div class="flex justify-end gap-4">
+                <button 
+                    onclick="closeDeleteModal()"
+                    class="px-4 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                >
+                    Cancel
+                </button>
+                <form action="<?= htmlspecialchars(URLROOT . 'article/delete') ?>" method="POST">
+                    <input id="article_id" type="hidden" name="article_id" value="">
+                    <button
+                        type="submit"
+                        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                    >
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
+
 </main>
 
 <script>
-    // Function to delete an article (for demonstration purposes)
-    function deleteArticle(articleId) {
-        if (confirm("Are you sure you want to delete this article?")) {
-            // Perform delete operation (e.g., API call)
-            alert('Article ' + articleId + ' deleted.');
-        }
+    let articleToDelete = '';
+
+    function confirmDelete(articleToDelete, id) {
+        articleToDelete = articleToDelete;
+        document.getElementById('article_id').value = id;
+
+        document.getElementById('articleToDelete').textContent = articleToDelete;
+        document.getElementById('deleteModal').classList.remove('hidden');
+        document.getElementById('deleteModal').classList.add('flex');
     }
 
-    // Function to filter articles based on the selected theme
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').classList.remove('flex');
+        document.getElementById('deleteModal').classList.add('hidden');
+        articleToDelete = '';
+        document.getElementById('article_id').value = '';
+    }
+
+    document.getElementById('deleteModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeDeleteModal();
+        }
+    });
+
     function applyFilter() {
         const selectedTheme = document.getElementById('themeFilter').value;
         const articles = document.querySelectorAll('.article');
         
         articles.forEach(article => {
-            // Show all if no theme is selected
             if (!selectedTheme || article.classList.contains(selectedTheme)) {
                 article.style.display = 'block';
             } else {

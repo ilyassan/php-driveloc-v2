@@ -57,13 +57,7 @@
                 <p class="text-gray-600">No articles found.</p>
             </div>
         <?php else: ?>
-            <?php
-                function getExcerpt($content, $length = 100)
-                {
-                    $plainText = strip_tags($content);
-                    return strlen($plainText) > $length ? substr($plainText, 0, $length) . '...' : $plainText;
-                }
-            ?>
+            
             <?php foreach ($articles as $article): ?>
                 <div class="bg-white rounded-lg shadow-lg p-6 relative">
                     <form action="<?= URLROOT . 'articles/addToFavorite' ?>" method="POST">
