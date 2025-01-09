@@ -1,4 +1,4 @@
-<main class="container mx-auto py-12 max-w-4xl">
+<main class="p-6">
     <!-- Article Header -->
     <div class="bg-white rounded-lg shadow-lg p-8 mb-6">
         <div class="flex justify-between items-start mb-6">

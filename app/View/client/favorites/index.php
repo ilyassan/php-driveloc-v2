@@ -8,13 +8,6 @@
         <p class="text-gray-600 mt-2">Enjoy a curated list of articles you’ve marked as your favorites.</p>
     </div>
 
-    <?php
-        function getExcerpt($content, $length = 100)
-        {
-            $plainText = strip_tags($content);
-            return strlen($plainText) > $length ? substr($plainText, 0, $length) . '...' : $plainText;
-        }
-    ?>
     <!-- Favorite Articles Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <?php foreach($articles as $article): ?>

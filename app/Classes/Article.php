@@ -122,6 +122,15 @@
         return $result;
     }
 
+    public static function all()
+    {
+        $sql = "SELECT * FROM articles";
+        self::$db->query($sql);
+    
+        $results = self::$db->results();
+    
+        return $results;
+    }
 
     public static function countByFilter($themeId, $keyword)
     {

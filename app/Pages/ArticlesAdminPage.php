@@ -4,7 +4,9 @@
     {
         public function index()
         {
-            $this->render('/articles/index');
+            $articles = Article::all();
+
+            $this->render('/articles/index', compact('articles'));
         }
 
         public function show($id)

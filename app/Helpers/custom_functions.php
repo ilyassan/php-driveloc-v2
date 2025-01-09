@@ -23,3 +23,9 @@
             echo 'Just now';
         }
     }
+
+    function getExcerpt($content, $length = 100)
+    {
+        $plainText = strip_tags($content);
+        return strlen($plainText) > $length ? substr($plainText, 0, $length) . '...' : $plainText;
+    }
