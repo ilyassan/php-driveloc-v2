@@ -4,6 +4,8 @@
     {
         public function index()
         {
-            $this->render('/tags/index');
+            $tags = Tag::all();
+
+            $this->render('/tags/index', compact('tags'));
         }
     }

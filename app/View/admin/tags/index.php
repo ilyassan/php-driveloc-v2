@@ -50,76 +50,26 @@
         <div class="flex justify-between items-center mb-6">
             <h3 class="text-lg font-semibold text-gray-800">Tags</h3>
             <span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">
-                5 Tags
+                <?= count($tags) ?> Tags
             </span>
         </div>
 
         <!-- Tags Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div class="group shadow-md relative bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
-                <!-- Tag Name -->
-                <h4 class="text-gray-700 font-medium">Sports</h4>
-                
-                <!-- Delete Button -->
-                <button 
-                    onclick="confirmDelete('Sports', '1')"
-                    class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:text-red-600"
-                >
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-
-            <div class="group shadow-md relative bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
-                <!-- Tag Name -->
-                <h4 class="text-gray-700 font-medium">Luxury</h4>
-                
-                <!-- Delete Button -->
-                <button 
-                    onclick="confirmDelete('Luxury', '2')"
-                    class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:text-red-600"
-                >
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-
-            <div class="group shadow-md relative bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
-                <!-- Tag Name -->
-                <h4 class="text-gray-700 font-medium">Technology</h4>
-                
-                <!-- Delete Button -->
-                <button 
-                    onclick="confirmDelete('Technology', '3')"
-                    class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:text-red-600"
-                >
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-
-            <div class="group shadow-md relative bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
-                <!-- Tag Name -->
-                <h4 class="text-gray-700 font-medium">Innovation</h4>
-                
-                <!-- Delete Button -->
-                <button 
-                    onclick="confirmDelete('Innovation', '4')"
-                    class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:text-red-600"
-                >
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-
-            <div class="group shadow-md relative bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
-                <!-- Tag Name -->
-                <h4 class="text-gray-700 font-medium">Electric</h4>
-                
-                <!-- Delete Button -->
-                <button 
-                    onclick="confirmDelete('Electric', '5')"
-                    class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:text-red-600"
-                >
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
+            <?php foreach ($tags as $tag):?>
+                <div class="group shadow-md relative bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+                    <!-- Tag Name -->
+                    <h4 class="text-gray-700 font-medium"><?= $tag["name"] ?></h4>
+                    
+                    <!-- Delete Button -->
+                    <button 
+                        onclick="confirmDelete('<?= $tag['name'] ?>', '<?= $tag['id'] ?>')"
+                        class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:text-red-600"
+                    >
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            <?php endforeach;?>
         </div>
     </div>
 </section>
