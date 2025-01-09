@@ -6,29 +6,43 @@
     </div>
 
     <!-- Search and Filter Bar -->
-    <div class="flex gap-4 mb-8">
+    <form class="flex gap-4 mb-8">
         <!-- Search Bar -->
         <div class="flex-1 relative">
-            <input type="text" placeholder="Search articles..." class="w-full pl-12 pr-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+            <input autocomplete="off" value="<?= $_GET['search'] ?>" type="text" name="search" placeholder="Search articles..." class="w-full pl-12 pr-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
             <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
         </div>
 
-        <!-- Theme Select Filter -->
-        <div class="relative">
-            <select id="themeFilter" class="w-48 pl-4 pr-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
-                <option value="">Select Theme</option>
-                <option value="bmw">BMW</option>
-                <option value="tesla">Tesla</option>
-                <option value="electric">Electric Cars</option>
-                <option value="sports">Sports Cars</option>
-            </select>
+        <!-- Themes (Custom Dropdown) -->
+        <div class="relative min-w-40">
+            <input id="theme_id" type="hidden" name="theme_id" value="">
+            <button
+                type="button"
+                id="themesDropdown"
+                class="flex min-h-full items-center border border-gray-300 rounded-md px-4 py-2 w-full bg-white text-gray-500 focus:outline-none"
+            >
+                <i class="fas fa-layer-group text-gray-500 mr-2"></i>
+                <span id="selectedThemes">
+                    <?= $themes[array_search($_GET['theme_id'], array_column($themes, 'id'))]['name'] ?? "All" ?></span>
+                <i class="fas fa-chevron-down ml-auto text-gray-400"></i>
+            </button>
+            <!-- Dropdown Options -->
+            <ul
+                id="themesDropdownMenu"
+                class="absolute dropdown-menu hidden bg-white shadow-md rounded-md w-full mt-2 z-10"
+            >
+                <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" onclick="selectOption('themesDropdown', 'selectedThemes', '<?= htmlspecialchars('All') ?>')"><?= htmlspecialchars("All") ?></li>
+                <?php foreach ($themes as $theme): ?>
+                    <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" onclick="selectOption('themesDropdown', 'selectedThemes', '<?= htmlspecialchars($theme['name']) ?>', '<?= htmlspecialchars($theme['id']) ?>')"><?= htmlspecialchars($theme['name']) ?></li>
+                <?php endforeach; ?>
+            </ul>
         </div>
 
         <!-- Filter Button -->
-        <button onclick="applyFilter()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg flex items-center gap-2">
+        <button class="bg-primary text-white px-4 py-2 rounded-lg flex items-center gap-2">
             <i class="fas fa-filter"></i> Filter
         </button>
-    </div>
+    </form>
 
     <!-- Articles Grid -->
     <div id="articlesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -78,6 +92,36 @@
 </main>
 
 <script>
+        function toggleDropdown(dropdownId, menuId) {
+        closeAllDropdowns();
+        
+        const menu = document.getElementById(menuId);
+        menu.classList.toggle('hidden');
+    }
+
+    function selectOption(dropdownId, labelId, value, id = '') {
+        document.getElementById("theme_id").value = id;
+        document.getElementById(labelId).innerText = value;
+        document.getElementById(`${dropdownId}Menu`).classList.add('hidden');
+    }
+
+    function closeAllDropdowns() {
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+            menu.classList.add('hidden');
+        });
+    }
+
+    // Event listeners for dropdown toggles
+    document.getElementById('themesDropdown').addEventListener('click', function (event) {
+        event.stopPropagation();
+        toggleDropdown('themesDropdown', 'themesDropdownMenu');
+    });
+
+    document.addEventListener('click', function () {
+        closeAllDropdowns();
+    });
+
+
     let articleToDelete = '';
 
     function confirmDelete(articleToDelete, id) {
