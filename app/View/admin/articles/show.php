@@ -2,19 +2,33 @@
     <!-- Article Header -->
     <div class="bg-white rounded-lg shadow-lg p-8 mb-6">
         <div class="flex justify-between items-start mb-6">
-            <span class="text-red-500 text-sm font-medium">June 15, 2024</span>
-            <button class="text-gray-400 hover:text-red-500" onclick="openDeleteArticleModal()">
+            <span class="text-red-500 text-sm font-medium">
+                <?= (new DateTime($article->created_at))->format('F d, Y') ?>
+            </span>
+            <button class="text-gray-400 hover:text-red-500" onclick="confirmArticleDelete('<?= $article->title ?>', '<?= $article->id ?>')">
                 <i class="far fa-trash-alt text-xl"></i>
             </button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-4">The New BMW M3: A Perfect Blend of Power and Luxury</h1>
+        <h1 class="text-3xl font-bold text-gray-800 mb-4"><?= $article->title ?></h1>
         <div class="flex items-center gap-6 text-sm text-gray-500 mb-8">
-            <div class="flex items-center gap-3 px-4 py-2 text-gray-600">
+            <div class="flex items-center gap-3 pr-4 py-2 text-gray-600">
                 <i class="fas fa-user-circle text-xl"></i>
-                <span class="font-medium">John Smith</span>
+                <span class="font-medium"><?= $article->author_name ?></span>
             </div>
+            <?php
+                    // Function to calculate reading time
+                    function calculateReadingTime($content, $wordsPerMinute = 200) {
+                        $wordCount = str_word_count(strip_tags($content));
+                        $readingTime = ceil($wordCount / $wordsPerMinute);
+                        return $readingTime;
+                    }
+
+                    // Example usage
+                    $articleContent = $article->content; // Replace with actual article content
+                    $readingTime = calculateReadingTime($articleContent);
+                ?>
             <span class="flex items-center gap-1">
-                <i class="far fa-clock"></i> 8 min read
+                <i class="far fa-clock"></i> <?= $readingTime ?> min read
             </span>
             <span class="flex items-center gap-1">
                 <i class="far fa-eye"></i> 1.2k views
@@ -23,108 +37,120 @@
 
         <!-- Article Content -->
         <div class="prose max-w-none">
-            <p class="text-gray-600 mb-4">Experience the thrill of BMW's latest masterpiece...</p>
-            
-            <h2 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Performance Specs</h2>
-            <p class="text-gray-600 mb-4">The heart of the new M3 is its 3.0-liter twin-turbocharged inline-six engine...</p>
-            
-            <h2 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Interior Comfort</h2>
-            <p class="text-gray-600 mb-4">The cabin features premium materials throughout...</p>
+            <?= htmlspecialchars_decode($article->content) ?>
         </div>
 
         <!-- Engagement Section -->
         <div class="border-t border-gray-200 mt-8 pt-6">
-            <div class="flex items-center gap-6">
-                <button class="flex items-center gap-2 text-gray-500 hover:text-red-500">
-                    <i class="far fa-thumbs-up"></i> 245
-                </button>
-                <button class="flex items-center gap-2 text-gray-500 hover:text-red-500">
-                    <i class="far fa-thumbs-down"></i> 12
-                </button>
-                <button class="flex items-center gap-2 text-gray-500">
-                    <i class="far fa-comment"></i> 89 Comments
-                </button>
-                <button class="flex items-center gap-2 text-gray-500 hover:text-red-500">
-                    <i class="far fa-share-square"></i> Share
-                </button>
+                <form method="POST" class="flex items-center gap-6">
+                    <input type="hidden" name="article_id" value="<?= $article->id ?>">
+                    <button type="submit" formaction="<?= URLROOT . 'articles/like' ?>" class="<?= $isLiked ? 'text-primary' : 'text-gray-500' ?> flex items-center gap-2 hover:text-red-500">
+                        <i class="<?= $isLiked ? 'fas' : 'far' ?> fa-thumbs-up"></i> <?= $article->likes_count ?>
+                    </button>
+                    <button type="submit" formaction="<?= URLROOT . 'articles/dislike' ?>" class="<?= $isDisliked ? 'text-primary' : 'text-gray-500' ?> flex items-center gap-2 text-gray-500 hover:text-red-500">
+                        <i class="<?= $isDisliked ? 'fas' : 'far' ?> far fa-thumbs-down"></i> <?= $article->dislikes_count ?>
+                    </button>
+                    <button type="button" class="flex items-center gap-2 text-gray-500">
+                        <i class="far fa-comment"></i> <?= count($comments) ?> Comments
+                    </button>
+                    <button type="button" class="flex items-center gap-2 text-gray-500 hover:text-red-500">
+                        <i class="far fa-share-square"></i> Share
+                    </button>
+                </form>
             </div>
-        </div>
     </div>
 
     <!-- Comments Section -->
     <div class="bg-white rounded-lg shadow-lg p-8">
-        <h3 class="text-xl font-bold text-gray-800 mb-6">Comments (89)</h3>
-        
-        <!-- Comment Form -->
-        <div class="mb-8">
-            <textarea class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" rows="3" placeholder="Add a comment..."></textarea>
-            <button class="mt-2 bg-red-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-600">Post Comment</button>
-        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-6">Comments (<?= count($comments) ?>)</h3>
 
         <!-- Comments List -->
         <div class="space-y-6">
-            <!-- Comment 1 -->
-            <div class="border-b border-gray-200 pb-6">
-                <div class="flex items-center gap-3 mb-3">
-                    <i class="fas fa-user-circle text-4xl text-gray-600"></i>
-                    <div>
-                        <h4 class="font-medium text-gray-800">Mike Johnson</h4>
-                        <span class="text-sm text-gray-500">2 hours ago</span>
+            <?php foreach($comments as $i => $comment): ?>
+                <div class="<?= $i == 0 ? '': 'border-t pt-6' ?> border-gray-200">
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center gap-3 mb-3">
+                            <i class="fas fa-user-circle text-4xl text-gray-600"></i>
+                            <div>
+                                <h4 class="font-medium text-gray-800"><?= $comment["author_name"] . ($comment['author_id'] === user()->getId() ? " ( You )" : "") ?></h4>
+                                <span class="text-sm text-gray-500"><?= getTimeAgoFromDate($comment['created_at']) ?></span>
+                            </div>
+                        </div>
+                        
+                        <?php if ($comment['author_id'] === user()->getId()): ?>
+                            <form action="<?= URLROOT . 'comments/delete' ?>" method="POST" class="delete-comment-form">
+                                <input type="hidden" name="comment_id" value="<?= $comment['id'] ?>">
+                                <input type="hidden" name="article_id" value="<?= $article->id ?>">
+                                <button type="submit" class="text-sm text-red-500 hover:text-red-700">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </form>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <p class="text-gray-600"><?= $comment["content"] ?></p>
+                    <div class="flex items-center gap-4 mt-3">
+                        <button class="text-sm text-gray-500 hover:text-red-500">Reply</button>
+                        <button class="text-sm text-gray-500 hover:text-red-500">Like</button>
                     </div>
                 </div>
-                <p class="text-gray-600">Great review! The performance specs are impressive...</p>
-                <div class="flex items-center gap-4 mt-3">
-                    <button class="text-sm text-gray-500 hover:text-red-500">Reply</button>
-                    <button class="text-sm text-gray-500 hover:text-red-500">Like</button>
-                    <button class="text-sm text-red-500 hover:text-red-600" onclick="openDeleteCommentModal()">Delete</button>
-                </div>
-            </div>
-
-            <!-- Comment 2 -->
-            <div class="border-b border-gray-200 pb-6">
-                <div class="flex items-center gap-3 mb-3">
-                    <i class="fas fa-user-circle text-4xl text-gray-600"></i>
-                    <div>
-                        <h4 class="font-medium text-gray-800">Sarah Chen</h4>
-                        <span class="text-sm text-gray-500">5 hours ago</span>
-                    </div>
-                </div>
-                <p class="text-gray-600">The interior looks amazing...</p>
-                <div class="flex items-center gap-4 mt-3">
-                    <button class="text-sm text-gray-500 hover:text-red-500">Reply</button>
-                    <button class="text-sm text-gray-500 hover:text-red-500">Like</button>
-                    <button class="text-sm text-red-500 hover:text-red-600" onclick="openDeleteCommentModal()">Delete</button>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
-
-        <!-- Load More Comments -->
-        <button class="mt-6 w-full py-3 text-gray-500 hover:text-red-500 font-medium">
-            Load More Comments
-        </button>
     </div>
+    
 
-    <!-- Delete Article Modal -->
-    <div id="deleteArticleModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center hidden">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h3 class="text-xl font-bold text-gray-800 mb-4">Delete Article</h3>
-            <p class="text-gray-600 mb-6">Are you sure you want to delete this article?</p>
+    <!-- Delete Article Confirmation -->
+    <div id="deleteArticleModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-sm mx-4">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Delete Category</h3>
+            <p class="text-gray-600 mb-6">Are you sure you want to delete "<span id="articleToDelete"></span>"? This action cannot be undone.</p>
+            
             <div class="flex justify-end gap-4">
-                <button onclick="closeDeleteArticleModal()" class="bg-gray-300 px-4 py-2 rounded-md">Cancel</button>
-                <button onclick="deleteArticle()" class="bg-red-500 text-white px-4 py-2 rounded-md">Delete</button>
+                <button 
+                    onclick="closeArticleDeleteModal()"
+                    class="px-4 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                >
+                    Cancel
+                </button>
+                <form action="<?= htmlspecialchars(URLROOT . 'articles/delete') ?>" method="POST">
+                    <input id="article_id" type="hidden" name="article_id" value="">
+                    <button
+                        type="submit"
+                        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                    >
+                        Delete
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- Delete Comment Modal -->
-    <div id="deleteCommentModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center hidden">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h3 class="text-xl font-bold text-gray-800 mb-4">Delete Comment</h3>
-            <p class="text-gray-600 mb-6">Are you sure you want to delete this comment?</p>
-            <div class="flex justify-end gap-4">
-                <button onclick="closeDeleteCommentModal()" class="bg-gray-300 px-4 py-2 rounded-md">Cancel</button>
-                <button onclick="deleteComment()" class="bg-red-500 text-white px-4 py-2 rounded-md">Delete</button>
-            </div>
-        </div>
-    </div>
+
 </main>
+
+
+<script>
+    let articleToDelete = '';
+
+    function confirmArticleDelete(articleToDelete, id) {
+        articleToDelete = articleToDelete;
+        document.getElementById('article_id').value = id;
+
+        document.getElementById('articleToDelete').textContent = articleToDelete;
+        document.getElementById('deleteArticleModal').classList.remove('hidden');
+        document.getElementById('deleteArticleModal').classList.add('flex');
+    }
+
+    function closeArticleDeleteModal() {
+        document.getElementById('deleteArticleModal').classList.remove('flex');
+        document.getElementById('deleteArticleModal').classList.add('hidden');
+        articleToDelete = '';
+        document.getElementById('article_id').value = '';
+    }
+
+    document.getElementById('deleteArticleModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeArticleDeleteModal();
+        }
+    });
+</script>
