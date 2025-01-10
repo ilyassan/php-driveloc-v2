@@ -9,7 +9,7 @@
     <form class="flex gap-4 mb-8">
         <!-- Search Bar -->
         <div class="flex-1 relative">
-            <input autocomplete="off" value="<?= $_GET['search'] ?>" type="text" name="search" placeholder="Search articles..." class="w-full pl-12 pr-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+            <input autocomplete="off" value="<?= $_GET['search'] ?? '' ?>" type="text" name="search" placeholder="Search articles..." class="w-full pl-12 pr-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
             <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
         </div>
 
@@ -23,7 +23,7 @@
             >
                 <i class="fas fa-layer-group text-gray-500 mr-2"></i>
                 <span id="selectedThemes">
-                    <?= $themes[array_search($_GET['theme_id'], array_column($themes, 'id'))]['name'] ?? "All" ?></span>
+                    <?= isset($_GET['theme_id']) ? $themes[array_search($_GET['theme_id'], array_column($themes, 'id'))]['name'] : "All" ?></span>
                 <i class="fas fa-chevron-down ml-auto text-gray-400"></i>
             </button>
             <!-- Dropdown Options -->
@@ -92,7 +92,7 @@
 </main>
 
 <script>
-        function toggleDropdown(dropdownId, menuId) {
+    function toggleDropdown(dropdownId, menuId) {
         closeAllDropdowns();
         
         const menu = document.getElementById(menuId);
@@ -145,17 +145,4 @@
             closeDeleteModal();
         }
     });
-
-    function applyFilter() {
-        const selectedTheme = document.getElementById('themeFilter').value;
-        const articles = document.querySelectorAll('.article');
-        
-        articles.forEach(article => {
-            if (!selectedTheme || article.classList.contains(selectedTheme)) {
-                article.style.display = 'block';
-            } else {
-                article.style.display = 'none';
-            }
-        });
-    }
 </script>
