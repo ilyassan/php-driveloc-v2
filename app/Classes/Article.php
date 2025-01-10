@@ -62,6 +62,11 @@
         return $this->image_name;
     }
 
+    public function setIsPublished($is_published)
+    {
+        $this->is_published = $is_published;
+    }
+
     public function save()
     {
         $sql = "INSERT INTO articles (title, content, image_name, theme_id, client_id)
@@ -80,6 +85,29 @@
         } else {
             return false;
         }
+    }
+
+    public function update()
+    {
+        $sql = "UPDATE articles
+                SET title = :title, content = :content, is_published = :is_published, image_name = :image_name, theme_id = :theme_id, client_id = :client_id
+                WHERE id = :id";
+
+        self::$db->query($sql);
+        self::$db->bind(':id', $this->id);
+        self::$db->bind(':title', $this->title);
+        self::$db->bind(':content', $this->content);
+        self::$db->bind(':is_published', $this->is_published);
+        self::$db->bind(':image_name', $this->image_name);
+        self::$db->bind(':theme_id', $this->theme_id);
+        self::$db->bind(':client_id', $this->client_id);
+
+        if (self::$db->execute()) {
+            $this->id = self::$db->lastInsertId();
+            return true;
+        } else {
+            return false;
+        }  
     }
     
     public function delete()

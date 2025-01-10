@@ -32,8 +32,11 @@
                             </span>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <button class="text-green-500 hover:text-green-600">Approve</button>
-                            <button class="text-red-500 hover:text-red-600 ml-4">Reject</button>
+                            <form method="POST">
+                                <input type="hidden" name="article_id" value="<?= $article['id'] ?>">
+                                <button formaction="<?= URLROOT . 'articles/publish' ?>" class="text-green-500 hover:text-green-600">Publish</button>
+                                <button formaction="<?= URLROOT . 'articles/refuse' ?>" class="text-red-500 hover:text-red-600 ml-4">Reject</button>
+                            </form>
                         </td>
                     </tr>
                     <?php endforeach; ?>
