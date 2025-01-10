@@ -71,6 +71,9 @@
 
     $router->add('GET', '/articles/pending', 'PendingArticlesPage@index', "admin");
     $router->add('GET', '/articles/pending/{id}', 'PendingArticlesPage@show', "admin");
+    $router->add('POST', '/articles/publish', 'PendingArticlesPage@publishArticle', "admin");
+    $router->add('POST', '/articles/refuse', 'PendingArticlesPage@refuseArticle', "admin");
+
     $router->add('GET', '/articles/{id}', 'ArticlesAdminPage@show', "admin");
 
     $router->add('GET', '/tags', 'TagsPage@index', "admin");
