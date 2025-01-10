@@ -215,6 +215,20 @@
         return $results;
     }
 
+    public static function pendings()
+    {
+        $sql = "SELECT
+                    a.*,
+                    CONCAT(u.first_name, ' ', u.last_name) as author_name
+                FROM articles a
+                JOIN users u ON u.id = a.client_id
+                WHERE a.is_published = 0";
+    
+        self::$db->query($sql);
+        $results = self::$db->results();
+    
+        return $results;
+    }
 
     public static function paginate($themeId, int $page, int $articlesPerPage, $searchTerm = '')
     {

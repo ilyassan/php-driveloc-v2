@@ -5,7 +5,9 @@
 
         public function index()
         {
-            $this->render('/pendingArticles/index');
+            $articles = Article::pendings();
+
+            $this->render('/pendingArticles/index', compact('articles'));
         }
 
         public function show($id)
