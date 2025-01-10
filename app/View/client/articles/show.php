@@ -83,22 +83,56 @@
                                 <i class="fas fa-user-circle text-4xl text-gray-600"></i>
                                 <div>
                                     <h4 class="font-medium text-gray-800"><?= $comment["author_name"] . ($comment['author_id'] === user()->getId() ? " ( You )" : "") ?></h4>
-                                    <span class="text-sm text-gray-500"><?= getTimeAgoFromDate($comment['created_at']) ?></span>
+                                    <span class="text-sm text-gray-500"><?= getTimeAgoFromDate($comment['created_at']) ?> <?= $comment['is_edited'] ? '(Edited)' : '' ?></span>
                                 </div>
                             </div>
                             
                             <?php if ($comment['author_id'] === user()->getId()): ?>
-                                <form action="<?= URLROOT . 'comments/delete' ?>" method="POST" class="delete-comment-form">
-                                    <input type="hidden" name="comment_id" value="<?= $comment['id'] ?>">
-                                    <input type="hidden" name="article_id" value="<?= $article->id ?>">
-                                    <button type="submit" class="text-sm text-red-500 hover:text-red-700">
-                                        <i class="fas fa-trash"></i> Delete
+                                <div class="flex gap-4">
+                                    <!-- Edit button -->
+                                    <button type="button" 
+                                            class="text-sm text-gray-500 hover:text-red-500 edit-comment-btn"
+                                            data-comment-id="<?= $comment['id'] ?>">
+                                        <i class="fas fa-edit"></i> Edit
                                     </button>
-                                </form>
+                                    <!-- Delete form -->
+                                    <form action="<?= URLROOT . 'comments/delete' ?>" method="POST" class="delete-comment-form">
+                                        <input type="hidden" name="comment_id" value="<?= $comment['id'] ?>">
+                                        <input type="hidden" name="article_id" value="<?= $article->id ?>">
+                                        <button type="submit" class="text-sm text-gray-500 hover:text-red-500">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
                             <?php endif; ?>
                         </div>
                         
-                        <p class="text-gray-600"><?= $comment["content"] ?></p>
+                        <!-- Regular comment content -->
+                        <p class="text-gray-600 comment-content" id="comment-content-<?= $comment['id'] ?>"><?= $comment["content"] ?></p>
+                        
+                        <!-- Edit form (hidden by default) -->
+                        <form action="<?= URLROOT . 'comments/update' ?>" 
+                            method="POST" 
+                            class="hidden edit-comment-form" 
+                            id="edit-form-<?= $comment['id'] ?>">
+                            <textarea name="comment" 
+                                    class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 mb-2"
+                                    rows="3"><?= $comment["content"] ?></textarea>
+                            <input type="hidden" name="comment_id" value="<?= $comment['id'] ?>">
+                            <input type="hidden" name="article_id" value="<?= $article->id ?>">
+                            <div class="flex gap-2">
+                                <button type="submit" 
+                                        class="bg-red-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-600">
+                                    Save Changes
+                                </button>
+                                <button type="button" 
+                                        class="border border-gray-300 text-gray-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-50 cancel-edit-btn"
+                                        data-comment-id="<?= $comment['id'] ?>">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+
                         <div class="flex items-center gap-4 mt-3">
                             <button class="text-sm text-gray-500 hover:text-red-500">Reply</button>
                             <button class="text-sm text-gray-500 hover:text-red-500">Like</button>
@@ -108,3 +142,39 @@
             </div>
         </div>
     </main>
+
+
+<script>
+    document.querySelectorAll('.edit-comment-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const commentId = this.getAttribute("data-comment-id");
+            const contentElement = document.getElementById(`comment-content-${commentId}`);
+            const editForm = document.getElementById(`edit-form-${commentId}`);
+            
+            // Hide the content and show the edit form
+            contentElement.classList.add('hidden');
+            editForm.classList.remove('hidden');
+        });
+    });
+
+    // Handle cancel button clicks
+    document.querySelectorAll('.cancel-edit-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const commentId = this.getAttribute("data-comment-id");
+            const contentElement = document.getElementById(`comment-content-${commentId}`);
+            const editForm = document.getElementById(`edit-form-${commentId}`);
+            
+            // Show the content and hide the edit form
+            contentElement.classList.remove('hidden');
+            editForm.classList.add('hidden');
+        });
+    });
+
+    // Optional: Auto-resize textarea as user types
+    document.querySelectorAll('.edit-comment-form textarea').forEach(textarea => {
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+    });
+</script>

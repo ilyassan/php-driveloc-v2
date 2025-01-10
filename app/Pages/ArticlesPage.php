@@ -114,7 +114,7 @@
 
             if (empty(array_filter($errors))) {
 
-                $comment = new Comment(null, $data["comment"], null, $data["theme_id"], user()->getId());
+                $comment = new Comment(null, $data["comment"], null, null, $data["theme_id"], user()->getId());
 
                 if ($comment->save()) {
                     flash("success", "Your comment has been added successfully!");
@@ -126,6 +126,52 @@
     
             flash("error", array_first_not_null_value($errors));
             redirect('articles/'. $data["theme_id"]);
+        }
+
+        public function updateComment()
+        {
+
+            $data = [
+                'comment' => $_POST['comment'] ,
+                'comment_id' => $_POST['comment_id'] ?? null,
+                'article_id' => $_POST['article_id'] ?? null
+            ];
+
+            $errors = [
+                'comment_err' => '',
+                'comment_id_err' => '',
+                'authorization_err' => '',
+                'general_err' => ''
+            ];
+
+            if (empty($data['comment'])) {
+                $errors['comment_err'] = "Empty comment content.";
+            }
+
+            $comment = Comment::find($data['comment_id']);
+            if (!$comment) {
+                $errors['comment_id_err'] = "Comment not found.";
+            }
+
+            // Check if user is authorized to delete the comment
+            if ($comment && user()->isClient() && $comment->getClientId() !== user()->getId()) {
+                $errors['authorization_err'] = "You are not authorized to modify this comment.";
+            }
+
+            if (empty(array_filter($errors))) {
+
+                $comment->setContent($data['comment']);
+
+                if ($comment->update()) {
+                    flash("success", "Comment updated successfully!");
+                } else {
+                    flash("error", "Something went wrong while updating the comment.");
+                }
+            } else {
+                flash("error", array_first_not_null_value($errors));
+            }
+
+            redirect('articles/' . $data['article_id']);
         }
 
         public function deleteComment()

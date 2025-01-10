@@ -4,15 +4,17 @@
     private $id;
     private $content;
     private $is_deleted;
+    private $is_edited;
     private $created_at;
     private $article_id;
     private $client_id;
 
-    public function __construct($id, $content, $is_deleted, $article_id, $client_id)
+    public function __construct($id, $content, $is_deleted, $is_edited, $article_id, $client_id)
     {
         $this->id = $id;
         $this->content = $content;
         $this->is_deleted = $is_deleted;
+        $this->is_edited = $is_edited;
         $this->article_id = $article_id;
         $this->client_id = $client_id;
     }
@@ -47,12 +49,31 @@
         return $this->client_id;
     }
 
+    public function setContent($content)
+    {
+        $this->content = $content;
+    }
+
     public function save()
     {
         $sql = "INSERT INTO comments (content, article_id, client_id)
                 VALUES (:content, :article_id, :client_id)
                 ";
         self::$db->query($sql);
+        self::$db->bind(':content', $this->content);
+        self::$db->bind(':article_id', $this->article_id);
+        self::$db->bind(':client_id', $this->client_id);
+
+        return self::$db->execute();
+    }
+
+    public function update()
+    {
+        $sql = "UPDATE comments
+                SET content = :content, article_id = :article_id, client_id = :client_id, is_edited = 1
+                WHERE id = :id";
+        self::$db->query($sql);
+        self::$db->bind(':id', $this->id);
         self::$db->bind(':content', $this->content);
         self::$db->bind(':article_id', $this->article_id);
         self::$db->bind(':client_id', $this->client_id);
@@ -84,7 +105,7 @@
 
         $result = self::$db->single();
 
-        return new self($result->id, $result->content, $result->is_deleted, $result->article_id, $result->client_id);
+        return new self($result->id, $result->content, $result->is_deleted, $result->is_edited, $result->article_id, $result->client_id);
     }
 
     public static function getCommentsOfArticle(int $article_id) {
