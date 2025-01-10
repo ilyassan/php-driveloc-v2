@@ -77,15 +77,11 @@
                             </div>
                         </div>
                         
-                        <?php if ($comment['author_id'] === user()->getId()): ?>
-                            <form action="<?= URLROOT . 'comments/delete' ?>" method="POST" class="delete-comment-form">
-                                <input type="hidden" name="comment_id" value="<?= $comment['id'] ?>">
-                                <input type="hidden" name="article_id" value="<?= $article->id ?>">
-                                <button type="submit" class="text-sm text-red-500 hover:text-red-700">
-                                    <i class="fas fa-trash"></i> Delete
-                                </button>
-                            </form>
-                        <?php endif; ?>
+                        <div class="delete-comment-form">
+                            <button type="submit" onclick="confirmCommentDelete('<?= $comment['author_name'] ?>', '<?= $comment['id'] ?>')" class="text-sm text-red-500 hover:text-red-700">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
                     </div>
                     
                     <p class="text-gray-600"><?= $comment["content"] ?></p>
@@ -102,7 +98,7 @@
     <!-- Delete Article Confirmation -->
     <div id="deleteArticleModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white rounded-lg p-6 w-full max-w-sm mx-4">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Delete Category</h3>
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Delete Article</h3>
             <p class="text-gray-600 mb-6">Are you sure you want to delete "<span id="articleToDelete"></span>"? This action cannot be undone.</p>
             
             <div class="flex justify-end gap-4">
@@ -125,11 +121,62 @@
         </div>
     </div>
 
+    <!-- Delete Article Confirmation -->
+    <div id="deleteCommentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-sm mx-4">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Delete Comment</h3>
+            <p class="text-gray-600 mb-6">Are you sure you want to hide "<span id="commentToDelete"></span>" Comment?</p>
+            
+            <div class="flex justify-end gap-4">
+                <button 
+                    onclick="closeCommentModal()"
+                    class="px-4 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                >
+                    Cancel
+                </button>
+                <form action="<?= URLROOT . 'comments/delete' ?>" method="POST">
+                    <input id="comment_id" type="hidden" name="comment_id" value="">
+                    <input type="hidden" name="article_id" value="<?= $article->id ?>">
+                    <button
+                        type="submit"
+                        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                    >
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 
 </main>
 
 
 <script>
+    let commentToDelete = '';
+
+    function confirmCommentDelete(commentToDelete, id) {
+        commentToDelete = commentToDelete;
+        document.getElementById('comment_id').value = id;
+
+        document.getElementById('commentToDelete').textContent = commentToDelete;
+        document.getElementById('deleteCommentModal').classList.remove('hidden');
+        document.getElementById('deleteCommentModal').classList.add('flex');
+    }
+
+    function closeCommentModal() {
+        document.getElementById('deleteCommentModal').classList.remove('flex');
+        document.getElementById('deleteCommentModal').classList.add('hidden');
+        commentToDelete = '';
+        document.getElementById('comment_id').value = '';
+    }
+
+    document.getElementById('deleteCommentModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeCommentModal();
+        }
+    });
+
+    
     let articleToDelete = '';
 
     function confirmArticleDelete(articleToDelete, id) {

@@ -42,7 +42,7 @@
     $router->add('POST', '/articles/addToFavorite', 'ArticlesPage@addToFavorite', "client");
     
     $router->add('POST', '/comments/create', 'ArticlesPage@createComment', "client");
-    $router->add('POST', '/comments/delete', 'ArticlesPage@deleteComment', "client");
+    $router->add('POST', '/comments/delete', 'ArticlesPage@deleteComment');
 
     $router->add('POST', '/api/vehicles', 'VehiclesPage@getFilteredVehicles');
     $router->add('POST', '/api/getReservations', 'ReservationsPage@getFilteredReservations');

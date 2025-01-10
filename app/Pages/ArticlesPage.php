@@ -148,7 +148,7 @@
             }
 
             // Check if user is authorized to delete the comment
-            if ($comment && $comment->getClientId() !== user()->getId()) {
+            if ($comment && user()->isClient() && $comment->getClientId() !== user()->getId()) {
                 $errors['authorization_err'] = "You are not authorized to delete this comment.";
             }
 
