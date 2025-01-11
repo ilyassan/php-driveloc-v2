@@ -1,23 +1,13 @@
 <?php
     class SignupPage extends BasePage
     {
-        public function __construct(){}
-
         public function index()
         {
-            if(isLoggedIn()){
-                redirect("");
-            }
-
-            $this->render("auth/signup");
+            $this->render("/signup");
         }
 
         public function signup()
         {
-            if(isLoggedIn()){
-                redirect("");
-            }
-
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
 
             $data = [
