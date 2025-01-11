@@ -2,6 +2,8 @@
 DROP VIEW IF EXISTS vehiculesList;
 DROP PROCEDURE IF EXISTS AddReservation;
 
+DROP TABLE IF EXISTS likes;
+DROP TABLE IF EXISTS dislikes;
 DROP TABLE IF EXISTS reservations;
 DROP TABLE IF EXISTS ratings;
 DROP TABLE IF EXISTS vehicles;
@@ -105,15 +107,17 @@ CREATE TABLE ratings (
 CREATE TABLE themes (
     id INT AUTO_INCREMENT,
     name VARCHAR(255),
+    description VARCHAR(255),
+    image_name VARCHAR(255),
     PRIMARY KEY(id)
 );
 
 CREATE TABLE articles (
     id INT AUTO_INCREMENT,
     title VARCHAR(255),
-    description TEXT,
+    content TEXT,
     image_name VARCHAR(255),
-    is_published BOOLEAN,
+    is_published BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     views INT DEFAULT 0,
     theme_id INT,
@@ -126,8 +130,9 @@ CREATE TABLE articles (
 CREATE TABLE comments (
     id INT AUTO_INCREMENT,
     content TEXT,
-    is_deleted BOOLEAN,
+    is_deleted BOOLEAN DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_edited BOOLEAN DEFAULT FALSE,
     article_id INT,
     client_id INT,
     PRIMARY KEY(id),
@@ -139,7 +144,8 @@ CREATE TABLE favorites (
     article_id INT,
     client_id INT,
     FOREIGN KEY(article_id) REFERENCES articles(id) ON DELETE CASCADE,
-    FOREIGN KEY(client_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY(client_id) REFERENCES users(id) ON DELETE CASCADE,
+    PRIMARY KEY(article_id, client_id)
 );
 
 CREATE TABLE tags (
@@ -149,13 +155,31 @@ CREATE TABLE tags (
 );
 
 CREATE TABLE articles_tags (
+    id INT AUTO_INCREMENT,
     article_id INT,
     tag_id INT,
     FOREIGN KEY(article_id) REFERENCES articles(id) ON DELETE CASCADE,
     FOREIGN KEY(tag_id) REFERENCES tags(id) ON DELETE CASCADE,
-    PRIMARY KEY(article_id, tag_id)
+    PRIMARY KEY(id)
 );
 
+CREATE TABLE likes (
+    id INT AUTO_INCREMENT,
+    article_id INT,
+    client_id INT,
+    FOREIGN KEY(article_id) REFERENCES articles(id) ON DELETE CASCADE,
+    FOREIGN KEY(client_id) REFERENCES users(id) ON DELETE CASCADE,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE dislikes (
+    id INT AUTO_INCREMENT,
+    article_id INT,
+    client_id INT,
+    FOREIGN KEY(article_id) REFERENCES articles(id) ON DELETE CASCADE,
+    FOREIGN KEY(client_id) REFERENCES users(id) ON DELETE CASCADE,
+    PRIMARY KEY(id)
+);
 
 
 
@@ -855,46 +879,127 @@ INSERT INTO ratings (rate, vehicle_id, client_id, created_at) VALUES
     (5, 12, 2, '2024-07-10 15:00:00');
 
 
-    INSERT INTO themes (name) VALUES 
-    ('Car Repair and Maintenance'),
-    ('High-Speed Vehicles'),
-    ('Custom Car Modifications'),
-    ('Eco-Friendly Driving'),
-    ('Car Safety Features'),
-    ('Road Trips and Travel'),
-    ('Car Detailing and Cleaning'),
-    ('Driving Techniques'),
-    ('Car Audio Systems'),
-    ('Vintage Car Restoration');
 
-    INSERT INTO tags (name) VALUES 
-    ('Engine Tuning'),
-    ('Autonomous Vehicles'),
-    ('Sports Cars'),
-    ('Vintage Cars'),
-    ('Car Interior Design'),
-    ('Fuel Efficiency'),
-    ('Car Batteries'),
-    ('Driving Safety'),
-    ('Car Insurance'),
-    ('Car Financing'),
-    ('Car Shows'),
-    ('Car Photography'),
-    ('Performance Upgrades'),
-    ('Winter Driving'),
-    ('Summer Driving'),
-    ('Car Gadgets'),
-    ('Car Paint Jobs'),
-    ('Exhaust Systems'),
-    ('Car Suspension'),
-    ('Car Brakes'),
-    ('Car Tires'),
-    ('Car Navigation'),
-    ('Car Lighting'),
-    ('Car Alarms'),
-    ('Car Storage'),
-    ('Car Shipping'),
-    ('Car Rentals'),
-    ('Car History'),
-    ('Car Museums'),
-    ('Car Racing Events');
+INSERT INTO themes (name, description) VALUES 
+    ('Car Repair and Maintenance', 'Tips and guides for maintaining and repairing your vehicle to keep it running smoothly.'),
+    ('High-Speed Vehicles', 'Exploring the world of fast cars, supercars, and the technology behind high-speed performance.'),
+    ('Custom Car Modifications', 'Creative ways to personalize and upgrade your car for style and performance.'),
+    ('Eco-Friendly Driving', 'Sustainable driving practices and eco-conscious vehicle choices for a greener future.'),
+    ('Car Safety Features', 'Understanding modern safety technologies and how they protect drivers and passengers.'),
+    ('Road Trips and Travel', 'Planning unforgettable road trips and exploring scenic routes around the world.'),
+    ('Car Detailing and Cleaning', 'Expert advice on keeping your car spotless and maintaining its aesthetic appeal.'),
+    ('Driving Techniques', 'Mastering advanced driving skills and techniques for a safer and more enjoyable ride.'),
+    ('Car Audio Systems', 'Enhancing your driving experience with high-quality sound systems and audio upgrades.'),
+    ('Vintage Car Restoration', 'Reviving classic cars to their former glory through restoration and preservation.');
+
+
+INSERT INTO tags (name) VALUES 
+('Engine Tuning'),
+('Autonomous Vehicles'),
+('Sports Cars'),
+('Vintage Cars'),
+('Car Interior Design'),
+('Fuel Efficiency'),
+('Car Batteries'),
+('Driving Safety'),
+('Car Insurance'),
+('Car Financing'),
+('Car Shows'),
+('Car Photography'),
+('Performance Upgrades'),
+('Winter Driving'),
+('Summer Driving'),
+('Car Gadgets'),
+('Car Paint Jobs'),
+('Exhaust Systems'),
+('Car Suspension'),
+('Car Brakes'),
+('Car Tires'),
+('Car Navigation'),
+('Car Lighting'),
+('Car Alarms'),
+('Car Storage'),
+('Car Shipping'),
+('Car Rentals'),
+('Car History'),
+('Car Museums'),
+('Car Racing Events');
+
+
+INSERT INTO articles (title, content, image_name, is_published, theme_id, client_id) VALUES
+-- Articles for "Car Repair and Maintenance" (theme_id = 1)
+('10 Essential Car Maintenance Tips', 'Learn the top 10 tips to keep your car in perfect condition and avoid costly repairs.', 'car_maintenance.jpg', TRUE, 1, 1),
+('How to Change Your Cars Oil Like a Pro', 'A step-by-step guide to changing your cars oil and keeping your engine running smoothly.', 'oil_change.jpg', TRUE, 1, 2),
+('Common Car Problems and How to Fix Them', 'Identify and troubleshoot common car issues with this handy guide.', 'car_problems.jpg', TRUE, 1, 3),
+
+-- Articles for "High-Speed Vehicles" (theme_id = 2)
+('The Future of High-Speed Electric Vehicles', 'Discover how electric vehicles are revolutionizing the world of high-speed performance.', 'high_speed_ev.jpg', TRUE, 2, 4),
+('Top 5 Fastest Cars in the World in 2023', 'A look at the fastest production cars and what makes them so powerful.', 'fastest_cars.jpg', TRUE, 2, 5),
+
+-- Articles for "Custom Car Modifications" (theme_id = 3)
+('How to Customize Your Car on a Budget', 'Affordable ways to upgrade your cars appearance and performance without breaking the bank.', 'custom_car.jpg', TRUE, 3, 6),
+('The Best Custom Modifications for Sports Cars', 'Explore the most popular modifications for enhancing sports car performance and style.', 'sports_car_mods.jpg', TRUE, 3, 7),
+
+-- Articles for "Eco-Friendly Driving" (theme_id = 4)
+('Eco-Friendly Driving: Tips for a Greener Commute', 'Simple changes you can make to reduce your carbon footprint while driving.', 'eco_driving.jpg', TRUE, 4, 8),
+('The Benefits of Hybrid and Electric Vehicles', 'Why switching to a hybrid or electric car is good for the environment and your wallet.', 'hybrid_benefits.jpg', TRUE, 4, 9),
+
+-- Articles for "Car Safety Features" (theme_id = 5)
+('Top 5 Car Safety Features You Need in 2023', 'Explore the latest safety technologies that are making cars safer than ever.', 'car_safety.jpg', TRUE, 5, 10),
+('How Adaptive Cruise Control Works', 'A deep dive into the technology behind adaptive cruise control and its benefits.', 'cruise_control.jpg', TRUE, 5, 1),
+
+-- Articles for "Road Trips and Travel" (theme_id = 6)
+('Planning the Ultimate Road Trip: A Step-by-Step Guide', 'Everything you need to know to plan an unforgettable road trip adventure.', 'road_trip.jpg', TRUE, 6, 2),
+('Top 10 Scenic Drives in the United States', 'Discover the most breathtaking routes for your next road trip.', 'scenic_drives.jpg', TRUE, 6, 3),
+
+-- Articles for "Car Detailing and Cleaning" (theme_id = 7)
+('The Art of Car Detailing: Tips from the Pros', 'Expert advice on how to clean and detail your car like a professional.', 'car_detailing.jpg', TRUE, 7, 4),
+('How to Remove Stains from Your Cars Interior', 'Effective methods for cleaning and maintaining your cars interior.', 'interior_cleaning.jpg', TRUE, 7, 5),
+
+-- Articles for "Driving Techniques" (theme_id = 8)
+('Mastering Advanced Driving Techniques', 'Improve your driving skills with these advanced techniques for a safer and smoother ride.', 'driving_techniques.jpg', TRUE, 8, 6),
+('How to Drive Safely in Heavy Rain', 'Essential tips for staying safe on the road during heavy rainfall.', 'rain_driving.jpg', TRUE, 8, 7),
+
+-- Articles for "Car Audio Systems" (theme_id = 9)
+('Upgrade Your Car Audio System: A Beginners Guide', 'Everything you need to know to enhance your cars audio experience.', 'car_audio.jpg', TRUE, 9, 8),
+('The Best Car Speakers for 2023', 'A review of the top car speakers to take your audio system to the next level.', 'car_speakers.jpg', TRUE, 9, 9),
+
+-- Articles for "Vintage Car Restoration" (theme_id = 10)
+('Restoring a Vintage Car: Where to Start', 'A beginners guide to restoring classic cars and bringing them back to life.', 'vintage_restoration.jpg', TRUE, 10, 10),
+('Top Tools for Vintage Car Restoration', 'The must-have tools for anyone looking to restore a classic car.', 'restoration_tools.jpg', TRUE, 10, 1);
+
+
+INSERT INTO likes(article_id, client_id) VALUES
+(3, 4),
+(3, 5),
+(1, 4);
+
+INSERT INTO dislikes(article_id, client_id) VALUES
+(3, 3),
+(3, 2),
+(1, 12);
+
+INSERT INTO comments (content, is_deleted, article_id, client_id, created_at) VALUES
+('Great article! Really enjoyed reading about the new BMW M3.', FALSE, 1, 2, '2024-01-15 10:00:00'),
+('I disagree with some points, but overall a good read.', FALSE, 1, 3, '2024-01-16 11:15:00'),
+('This is exactly what I needed to know about car maintenance. Thanks!', FALSE, 2, 4, '2024-01-17 12:30:00'),
+('The article on eco-friendly driving was very informative.', FALSE, 3, 5, '2024-01-18 13:45:00'),
+('I think the author missed some key points about car safety.', FALSE, 4, 16, '2024-01-19 14:00:00'),
+('Loved the tips on car detailing. My car looks brand new now!', FALSE, 5, 7, '2024-01-20 15:15:00'),
+('The article on vintage car restoration inspired me to start my own project.', FALSE, 6, 8, '2024-01-21 16:30:00'),
+('I found the section on driving techniques very helpful.', FALSE, 7, 9, '2024-01-22 17:45:00'),
+('The audio system upgrade guide was spot on. Thanks for the recommendations!', FALSE, 8, 10, '2024-01-23 18:00:00'),
+('This article on road trips has me planning my next adventure already.', FALSE, 9, 11, '2024-01-24 19:15:00'),
+('I wish there were more details about custom car modifications.', FALSE, 10, 12, '2024-01-25 20:30:00'),
+('The article on high-speed vehicles was thrilling to read.', FALSE, 1, 13, '2024-01-26 21:45:00'),
+('I learned a lot about car batteries from this article. Thanks!', FALSE, 2, 14, '2024-01-27 22:00:00'),
+('The winter driving tips were very timely. Much appreciated!', FALSE, 3, 15, '2024-01-28 23:15:00'),
+('I disagree with the authors opinion on car insurance.', FALSE, 4, 38, '2024-01-29 10:30:00'),
+('The article on car financing was very insightful.', FALSE, 5, 17, '2024-01-30 11:45:00'),
+('I loved the section on car photography. Great tips!', FALSE, 6, 18, '2024-01-31 12:00:00'),
+('The article on car paint jobs was very detailed and helpful.', FALSE, 7, 19, '2024-02-01 13:15:00'),
+('I found the exhaust system guide very useful.', FALSE, 8, 20, '2024-02-02 14:30:00'),
+('The article on car suspension was a bit technical but informative.', FALSE, 9, 21, '2024-02-03 15:45:00'),
+('I wish there were more examples in the car brakes section.', FALSE, 10, 22, '2024-02-04 16:00:00'),
+('The article on car tires was very practical. Thanks!', FALSE, 1, 23, '2024-02-05 17:15:00'),
+('I enjoyed the car navigation guide. Very helpful for long trips.', FALSE, 2, 24, '2024-02-06 18:30:00');
