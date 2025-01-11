@@ -115,6 +115,7 @@ CREATE TABLE articles (
     image_name VARCHAR(255),
     is_published BOOLEAN,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    views INT DEFAULT 0,
     theme_id INT,
     client_id INT,
     PRIMARY KEY(id),

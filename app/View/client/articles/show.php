@@ -34,7 +34,7 @@
                     <i class="far fa-clock"></i> <?= $readingTime ?> min read
                 </span>
                 <span class="flex items-center gap-1">
-                    <i class="far fa-eye"></i> 1.2k views
+                    <i class="far fa-eye"></i> <?= $article->views ?> views
                 </span>
             </div>
 
