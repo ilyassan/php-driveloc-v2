@@ -1,14 +1,6 @@
 <?php
     class BasePage
     {
-
-        public function __construct()
-        {
-            if(!isLoggedIn()){
-                redirect("login");
-            }
-        }
-
         function render($path, $data = []){
             if ($path == "/") {
                 $path = "/index";
@@ -17,14 +9,13 @@
                 $path = "/" . $path;
             }
 
-            if (isLoggedIn()) {
-                if (user()->isAdmin()) {
-                    $path = APPROOT . "View/admin" . $path . ".php";
-                }else{
-                    $path = APPROOT . "View/client" . $path . ".php";
-                }
+            if ($path == "/signup" || $path == "/login") {
+                $path = APPROOT . "View/auth" . $path . ".php";
+            }
+            else if (isLoggedIn() && user()->isAdmin()) {
+                $path = APPROOT . "View/admin" . $path . ".php";
             }else{
-                $path = APPROOT . "View" . $path . ".php";
+                $path = APPROOT . "View/client" . $path . ".php";
             }
 
             $role = "client";

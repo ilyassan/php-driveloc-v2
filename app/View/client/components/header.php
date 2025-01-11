@@ -20,10 +20,7 @@
         </span>
       </div>
 
-      <?php
-        if (isLoggedIn()) {
-      ?>
-        <ul id="menu" class="flex text-secondary bg-white shadow-md sm:shadow-none flex-col sm:flex-row absolute sm:static w-11/12 sm:w-fit left-1/2 -translate-x-1/2 sm:-translate-x-0 z-10 -top-[500%] py-4 sm:py-0 rounded-b-lg sm:rounded-none items-center sm:gap-12 text-based transition-all duration-500 font-semibold">
+      <ul id="menu" class="flex text-secondary bg-white shadow-md sm:shadow-none flex-col sm:flex-row absolute sm:static w-11/12 sm:w-fit left-1/2 -translate-x-1/2 sm:-translate-x-0 z-10 -top-[500%] py-4 sm:py-0 rounded-b-lg sm:rounded-none items-center sm:gap-10 text-based transition-all duration-500 font-semibold">
           <li
             class="w-full block text-center py-3 sm:p-0 sm:w-fit sm:pb-1 transition-all duration-300 <?= requestPath() == URLROOT ? 'text-primary border-primary' : 'sm:border-transparent'?> border-b sm:border-b-2 hover:text-primary hover:border-primary"
           >
@@ -34,25 +31,39 @@
           >
             <a href="<?= URLROOT . "vehicles" ?>">Vehicles</a>
           </li>
-          <li
-            class="w-full block text-center py-3 sm:p-0 sm:w-fit sm:pb-1 transition-all duration-300 <?= requestPath() == URLROOT . "reservations" ? 'text-primary border-primary' : 'sm:border-transparent'?> border-b sm:border-b-2 hover:text-primary hover:border-primary"
-          >
-            <a href="<?= URLROOT . "reservations" ?>">Reservations</a>
-          </li>
-          <li
-            class="w-full block text-center py-3 sm:p-0 sm:w-fit sm:pb-1 transition-all duration-300 <?= requestPath() == URLROOT . "themes" ? 'text-primary border-primary' : 'sm:border-transparent'?> border-b sm:border-b-2 hover:text-primary hover:border-primary"
-          >
-            <a href="<?= URLROOT . "themes" ?>">Blog</a>
-          </li>
-          <li
-            class="cursor-pointer mt-5 sm:m-0 pt-1 pb-2 transition-all duration-300 bg-primary text-white px-2 rounded-lg"
-          >
-            <form action="<?= URLROOT . "logout" ?>" method="POST">
-              <button>Logout</button>
-            </form>
-          </li>
+          <?php
+            if (isLoggedIn()) {
+          ?>
+              <li
+                class="w-full block text-center py-3 sm:p-0 sm:w-fit sm:pb-1 transition-all duration-300 <?= requestPath() == URLROOT . "reservations" ? 'text-primary border-primary' : 'sm:border-transparent'?> border-b sm:border-b-2 hover:text-primary hover:border-primary"
+              >
+                <a href="<?= URLROOT . "reservations" ?>">Reservations</a>
+              </li>
+              <li
+                class="w-full block text-center py-3 sm:p-0 sm:w-fit sm:pb-1 transition-all duration-300 <?= requestPath() == URLROOT . "themes" ? 'text-primary border-primary' : 'sm:border-transparent'?> border-b sm:border-b-2 hover:text-primary hover:border-primary"
+              >
+                <a href="<?= URLROOT . "themes" ?>">Blog</a>
+              </li>
+              <li
+                class="cursor-pointer mt-5 sm:m-0 pt-1 pb-2 transition-all duration-300 bg-primary text-white px-2 rounded-lg"
+              >
+                <form action="<?= URLROOT . "logout" ?>" method="POST">
+                  <button>Logout</button>
+                </form>
+              </li>
+          <?php
+            }else{
+          ?>
+              <li
+                class="w-full block text-center py-3 sm:p-0 sm:w-fit sm:pb-1 transition-all duration-300 <?= requestPath() == URLROOT . "login" ? 'text-primary border-primary' : 'sm:border-transparent'?> border-b sm:border-b-2 hover:text-primary hover:border-primary"
+              >
+                <a href="<?= URLROOT . "login" ?>">Login</a>
+              </li>
+              <li
+                class="w-full block text-center py-3 sm:p-0 sm:w-fit sm:pb-1 transition-all duration-300 <?= requestPath() == URLROOT . "signup" ? 'text-primary border-primary' : 'sm:border-transparent'?> border-b sm:border-b-2 hover:text-primary hover:border-primary"
+              >
+                <a href="<?= URLROOT . "signup" ?>">Signup</a>
+              </li>
+          <?php } ?>
         </ul>
-      <?php
-        }
-      ?>
     </nav>

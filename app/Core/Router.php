@@ -4,9 +4,9 @@ class Router
 {
     private $routes = [];
 
-    public function add($method, $path, $callback, $role = null)
+    public function add($method, $path, $callback, $roles)
     {
-        $this->routes[] = compact('method', 'path', 'callback', "role");
+        $this->routes[] = compact('method', 'path', 'callback', "roles");
     }
 
     public function dispatch($request)
@@ -27,11 +27,19 @@ class Router
             if ($route['method'] === $request->getMethod() &&
                 $route['path'] === $requestPath) {
 
-                if ($route['role'] && isLoggedIn()) {
-                    if ($route['role'] != user()->getRoleName()) {
+
+                if (isLoggedIn()) {
+                    // If the user role matched one of the route roles
+                    if (! in_array(user()->getRoleName(), $route['roles'])) {
                         continue;
                     }
                 }
+                else{
+                    if (! in_array("visitor", $route['roles'])) {
+                        redirect("login");
+                    }
+                }
+
                 
                 if (is_callable($route['callback'])) {
                     return call_user_func($route['callback']);
