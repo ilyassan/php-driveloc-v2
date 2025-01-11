@@ -31,6 +31,10 @@
             $isDisliked = Dislike::isArticleDislikedByUser($id, user()->getId());
 
             $this->render('/articles/show', compact('article', 'comments', 'isFavorite', 'isLiked', 'isDisliked'));
+            
+            $article = Article::find($article->id);
+            $article->setViews($article->getViews() + 1);
+            $article->update();
         }
 
         public function create()
@@ -78,7 +82,7 @@
             // Check for errors and store into Database
             if (empty(array_filter($errors))) {
 
-                $article = new Article(null, $data['title'], $data["content"], null, null, null, $data["theme_id"], user()->getId());
+                $article = new Article(null, $data['title'], $data["content"], null, null, null, null, $data["theme_id"], user()->getId());
 
                 if ($article->save() && $article->attachTags($data['tag_ids'])) {
                     flash("success", "You will be notify when your article has been published!");
