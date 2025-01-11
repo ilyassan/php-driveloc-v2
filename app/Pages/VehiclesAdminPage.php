@@ -86,7 +86,11 @@
             }
 
             $imageName = '';
-            if ($data['image']['error'] === UPLOAD_ERR_OK) {
+            
+            if (empty($data['image']['name']) || $data['image']['size'] == 0) {
+                $errors['image_err'] = 'Vehicle image is required.';
+            }
+            elseif ($data['image']['error'] === UPLOAD_ERR_OK) {
                 $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
                 if (in_array($data['image']['type'], $allowedTypes)) {
                     $uploadDir = IMAGESROOT . 'vehicles/';

@@ -82,12 +82,12 @@
                             <div class="flex items-center gap-3 mb-3">
                                 <i class="fas fa-user-circle text-4xl text-gray-600"></i>
                                 <div>
-                                    <h4 class="font-medium text-gray-800"><?= $comment["author_name"] . ($comment['author_id'] === user()->getId() ? " ( You )" : "") ?></h4>
+                                    <h4 class="font-medium text-gray-800"><?= $comment["author_name"] . (isLoggedIn() && $comment['author_id'] === user()->getId() ? " ( You )" : "") ?></h4>
                                     <span class="text-sm text-gray-500"><?= getTimeAgoFromDate($comment['created_at']) ?> <?= $comment['is_edited'] ? '(Edited)' : '' ?></span>
                                 </div>
                             </div>
                             
-                            <?php if ($comment['author_id'] === user()->getId()): ?>
+                            <?php if (isLoggedIn() && $comment['author_id'] === user()->getId()): ?>
                                 <div class="flex gap-4">
                                     <!-- Edit button -->
                                     <button type="button" 
