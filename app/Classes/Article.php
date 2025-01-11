@@ -304,7 +304,7 @@
         
         self::$db->query($sql);
         self::$db->bind(':theme_id', $themeId);
-        self::$db->bind(':client_id', user()->getId());
+        self::$db->bind(':client_id', isLoggedIn() ? user()->getId(): 0);
         self::$db->bind(':offset', $offset);
         self::$db->bind(':articles_per_page', $articlesPerPage);
         

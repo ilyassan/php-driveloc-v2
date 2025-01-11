@@ -26,9 +26,16 @@
         {
             $article = Article::findFullDetails($id);
             $comments = Comment::getCommentsOfArticle($id);
-            $isFavorite = Favorite::isArticleFavorite($id, user()->getId());
-            $isLiked = Like::isArticleLikedByUser($id, user()->getId());
-            $isDisliked = Dislike::isArticleDislikedByUser($id, user()->getId());
+
+            $isFavorite = false;
+            $isLiked = false;
+            $isDisliked = false;
+            
+            if (isLoggedIn()) {
+                $isFavorite = Favorite::isArticleFavorite($id, user()->getId());
+                $isLiked = Like::isArticleLikedByUser($id, user()->getId());
+                $isDisliked = Dislike::isArticleDislikedByUser($id, user()->getId());
+            }
 
             $this->render('/articles/show', compact('article', 'comments', 'isFavorite', 'isLiked', 'isDisliked'));
             
