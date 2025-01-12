@@ -1,4 +1,4 @@
-<footer class="bg-gray-100 py-8 text-gray-800">
+<footer class="bg-gray-50 py-8 text-gray-800">
   <div class="container mx-auto px-4">
     <div class="flex flex-col gap-10 md:flex-row md:justify-between">
       <!-- Company Info -->

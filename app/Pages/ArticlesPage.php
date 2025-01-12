@@ -5,6 +5,10 @@
 
         public function index($themeId)
         {
+            if (!intval($themeId)) {
+                redirect('themes');
+            }
+
             $articlesPerPage = $_GET['per_page'] ?? 10; // Default is 10 per page
 
             $keyword = isset($_GET['search']) ? trim($_GET['search']) : '';
@@ -15,6 +19,9 @@
             }
 
             $theme = Theme::find($themeId);
+            if (!$theme) {
+                redirect('themes');
+            }
 
             $articlesTotalCount = Article::countByFilter($themeId, $keyword);
             $articles = Article::paginate($themeId, $page, $articlesPerPage, $keyword);
@@ -24,7 +31,16 @@
 
         public function show($id)
         {
+            if (!intval($id)) {
+                redirect('themes');
+            }
+
             $article = Article::findFullDetails($id);
+            
+            if(!$article || !$article->is_published){
+                redirect('themes');
+            }
+
             $comments = Comment::getCommentsOfArticle($id);
 
             $isFavorite = false;
@@ -302,7 +318,7 @@
 
             if (Favorite::find($data['article_id'], user()->getId())) {
                 Favorite::remove($data["article_id"], user()->getId());
-                redirect('articles/favorites');
+                redirect('favorites');
                 return;
             }
 
@@ -311,11 +327,11 @@
                 $favorite = new Favorite(null, $data["article_id"], user()->getId());
                 if ($favorite->save()) {
                     flash("success", "Article added to your favorites.");
-                    redirect('articles/favorites');
+                    redirect('favorites');
                 }
             }
     
             flash("error", array_first_not_null_value($errors));
-            redirect('articles/favorites');
+            redirect('favorites');
         }
     }

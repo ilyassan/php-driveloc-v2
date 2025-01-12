@@ -2,6 +2,14 @@
 <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 
     <main class="container mx-auto py-12 max-w-4xl">
+
+        <!-- Back Link -->
+        <div class="mb-4">
+            <a href="<?= URLROOT . 'themes' ?>" class="flex items-center text-primary text-3xl">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+        
         <div class="bg-white rounded-lg shadow-lg p-8">
             <!-- Header -->
             <div class="mb-8">

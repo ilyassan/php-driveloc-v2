@@ -185,7 +185,7 @@
 
     public static function all($keyword = '', $theme_id = '')
     {
-        $sql = "SELECT * FROM articles WHERE 1=1";
+        $sql = "SELECT * FROM articles WHERE is_published = 1";
     
         if (!empty($keyword)) {
             $sql .= " AND (title LIKE :keyword 
@@ -213,11 +213,16 @@
 
     public static function countByFilter($themeId, $keyword)
     {
-        $sql = "SELECT COUNT(a.id) as count
+        $sql = "SELECT COUNT(DISTINCT a.id) as count
                 FROM articles a
-                WHERE a.theme_id = :theme_id
-                AND (a.title LIKE :search_term 
-                OR a.content LIKE :search_term)";
+                LEFT JOIN articles_tags at ON at.article_id = a.id
+                LEFT JOIN tags t ON t.id = at.tag_id
+                WHERE a.theme_id = :theme_id AND a.is_published = 1
+                AND (
+                    a.title LIKE :search_term 
+                    OR a.content LIKE :search_term
+                    OR t.name LIKE :search_term
+                )";
 
         self::$db->query($sql);
         self::$db->bind(':theme_id', $themeId);
@@ -294,7 +299,7 @@
                 LEFT JOIN favorites f ON f.article_id = a.id AND f.client_id = :client_id
                 LEFT JOIN articles_tags at ON at.article_id = a.id
                 LEFT JOIN tags t ON t.id = at.tag_id
-                WHERE a.theme_id = :theme_id";
+                WHERE a.theme_id = :theme_id AND a.is_published = 1";
         
         // Add search condition only if search term is not empty
         if (!empty($searchTerm)) {
