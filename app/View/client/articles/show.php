@@ -1,4 +1,12 @@
 <main class="container mx-auto py-12 max-w-4xl">
+
+        <!-- Back Link -->
+        <div class="mb-4">
+            <a href="<?= URLROOT . 'themes/' . $article->theme_id ?>" class="flex items-center text-primary text-3xl">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+
         <!-- Article Header -->
         <div class="bg-white rounded-lg shadow-lg p-8 mb-6">
             <div class="flex justify-between items-start mb-6">
@@ -44,7 +52,7 @@
             </div>
 
             <!-- Engagement Section -->
-            <div class="border-t flex justify-between border-gray-200 mt-8 pt-6">
+            <div class="border-t flex flex-col flex-wrap lg:flex-row gap-5 justify-between border-gray-200 mt-8 pt-6">
                 <form method="POST" class="flex items-center gap-6">
                     <input type="hidden" name="article_id" value="<?= $article->id ?>">
                     <button type="submit" formaction="<?= URLROOT . 'articles/like' ?>" class="<?= $isLiked ? 'text-primary' : 'text-gray-500' ?> flex items-center gap-2 hover:text-red-500">

@@ -772,6 +772,10 @@ video {
   margin-top: 2.5rem;
 }
 
+.mt-16 {
+  margin-top: 4rem;
+}
+
 .mt-2 {
   margin-top: 0.5rem;
 }
@@ -855,6 +859,10 @@ video {
   height: 100vh;
 }
 
+.h-32 {
+  height: 8rem;
+}
+
 .min-h-full {
   min-height: 100%;
 }
@@ -892,6 +900,10 @@ video {
   width: 100%;
 }
 
+.w-32 {
+  width: 8rem;
+}
+
 .min-w-40 {
   min-width: 10rem;
 }
@@ -922,6 +934,10 @@ video {
 
 .max-w-xl {
   max-width: 36rem;
+}
+
+.max-w-md {
+  max-width: 28rem;
 }
 
 .flex-1 {
@@ -1053,6 +1069,10 @@ video {
   row-gap: 0.5rem;
 }
 
+.gap-y-5 {
+  row-gap: 1.25rem;
+}
+
 .space-x-1 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.25rem * var(--tw-space-x-reverse));
@@ -1093,6 +1113,12 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .divide-y > :not([hidden]) ~ :not([hidden]) {
@@ -1172,6 +1198,10 @@ video {
 .border-primary {
   --tw-border-opacity: 1;
   border-color: rgb(227 51 50 / var(--tw-border-opacity, 1));
+}
+
+.border-white\/25 {
+  border-color: rgb(255 255 255 / 0.25);
 }
 
 .bg-black {
@@ -1402,8 +1432,9 @@ video {
   padding-bottom: 2rem;
 }
 
-.pb-2 {
-  padding-bottom: 0.5rem;
+.py-16 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 }
 
 .pl-12 {
@@ -1420,10 +1451,6 @@ video {
 
 .pr-4 {
   padding-right: 1rem;
-}
-
-.pt-1 {
-  padding-top: 0.25rem;
 }
 
 .pt-2 {
@@ -1660,6 +1687,12 @@ video {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+.shadow {
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
 .outline-none {
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -1671,6 +1704,14 @@ video {
 
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
 .transition-all {
@@ -1856,6 +1897,16 @@ html::-webkit-scrollbar-thumb {
   color: rgb(234 179 8 / var(--tw-text-opacity, 1));
 }
 
+.hover\:text-gray-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity, 1));
+}
+
+.hover\:text-gray-300:hover {
+  --tw-text-opacity: 1;
+  color: rgb(209 213 219 / var(--tw-text-opacity, 1));
+}
+
 .hover\:underline:hover {
   text-decoration-line: underline;
 }
@@ -1916,6 +1967,10 @@ html::-webkit-scrollbar-thumb {
 .focus\:ring-red-500:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(239 68 68 / var(--tw-ring-opacity, 1));
+}
+
+.focus\:ring-primary\/50:focus {
+  --tw-ring-color: rgb(227 51 50 / 0.5);
 }
 
 .group:hover .group-hover\:opacity-100 {
@@ -2011,12 +2066,20 @@ html::-webkit-scrollbar-thumb {
 }
 
 @media (min-width: 768px) {
+  .md\:mt-0 {
+    margin-top: 0px;
+  }
+
   .md\:w-1\/2 {
     width: 50%;
   }
 
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .md\:flex-row {
@@ -2069,6 +2132,14 @@ html::-webkit-scrollbar-thumb {
 
   .lg\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .lg\:flex-row {
+    flex-direction: row;
+  }
+
+  .lg\:gap-0 {
+    gap: 0px;
   }
 
   .lg\:text-\[16px\] {

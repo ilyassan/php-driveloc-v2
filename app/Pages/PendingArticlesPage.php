@@ -12,7 +12,13 @@
 
         public function show($id)
         {
-            $this->render('/pendingArticles/show');
+            $article = Article::findFullDetails($id);
+
+            if (!$article || $article->is_published) {
+                redirect('articles/pending');
+            }
+            
+            $this->render('/pendingArticles/show', compact('article'));
         }
 
         public function publishArticle()

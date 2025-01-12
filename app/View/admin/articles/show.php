@@ -26,7 +26,7 @@
                     // Example usage
                     $articleContent = $article->content; // Replace with actual article content
                     $readingTime = calculateReadingTime($articleContent);
-                ?>
+            ?>
             <span class="flex items-center gap-1">
                 <i class="far fa-clock"></i> <?= $readingTime ?> min read
             </span>
@@ -41,23 +41,36 @@
         </div>
 
         <!-- Engagement Section -->
-        <div class="border-t border-gray-200 mt-8 pt-6">
-                <form method="POST" class="flex items-center gap-6">
-                    <input type="hidden" name="article_id" value="<?= $article->id ?>">
-                    <button type="submit" formaction="<?= URLROOT . 'articles/like' ?>" class="<?= $isLiked ? 'text-primary' : 'text-gray-500' ?> flex items-center gap-2 hover:text-red-500">
-                        <i class="<?= $isLiked ? 'fas' : 'far' ?> fa-thumbs-up"></i> <?= $article->likes_count ?>
-                    </button>
-                    <button type="submit" formaction="<?= URLROOT . 'articles/dislike' ?>" class="<?= $isDisliked ? 'text-primary' : 'text-gray-500' ?> flex items-center gap-2 text-gray-500 hover:text-red-500">
-                        <i class="<?= $isDisliked ? 'fas' : 'far' ?> far fa-thumbs-down"></i> <?= $article->dislikes_count ?>
-                    </button>
-                    <button type="button" class="flex items-center gap-2 text-gray-500">
-                        <i class="far fa-comment"></i> <?= count($comments) ?> Comments
-                    </button>
-                    <button type="button" class="flex items-center gap-2 text-gray-500 hover:text-red-500">
-                        <i class="far fa-share-square"></i> Share
-                    </button>
-                </form>
+        <div class="border-t flex flex-col flex-wrap lg:flex-row gap-5 justify-between border-gray-200 mt-8 pt-6">
+            <form method="POST" class="flex items-center gap-6">
+                <input type="hidden" name="article_id" value="<?= $article->id ?>">
+                <button type="submit" formaction="<?= URLROOT . 'articles/like' ?>" class="<?= $isLiked ? 'text-primary' : 'text-gray-500' ?> flex items-center gap-2 hover:text-red-500">
+                    <i class="<?= $isLiked ? 'fas' : 'far' ?> fa-thumbs-up"></i> <?= $article->likes_count ?>
+                </button>
+                <button type="submit" formaction="<?= URLROOT . 'articles/dislike' ?>" class="<?= $isDisliked ? 'text-primary' : 'text-gray-500' ?> flex items-center gap-2 text-gray-500 hover:text-red-500">
+                    <i class="<?= $isDisliked ? 'fas' : 'far' ?> far fa-thumbs-down"></i> <?= $article->dislikes_count ?>
+                </button>
+                <button type="button" class="flex items-center gap-2 text-gray-500">
+                    <i class="far fa-comment"></i> <?= count($comments) ?> Comments
+                </button>
+                <button type="button" class="flex items-center gap-2 text-gray-500 hover:text-red-500">
+                    <i class="far fa-share-square"></i> Share
+                </button>
+            </form>
+
+            <!-- Article Tags -->
+            <div class="flex flex-wrap gap-2">
+                <?php if (!empty($article->tags)): ?>
+                    <?php foreach ($article->tags as $tag): ?>
+                        <span 
+                            class="px-2 py-1 rounded-full text-xs font-medium bg-primary text-white"
+                        >
+                            #<?= htmlspecialchars($tag) ?>
+                        </span>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
+        </div>
     </div>
 
     <!-- Comments Section -->

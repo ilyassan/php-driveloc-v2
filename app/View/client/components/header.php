@@ -27,7 +27,7 @@
             <a href="<?= URLROOT ?>">Home</a>
           </li>
           <li
-            class="w-full block text-center py-3 sm:p-0 sm:w-fit sm:pb-1 transition-all duration-300 <?= requestPath() == URLROOT . "vehicles" || implode("/", array_slice(explode('/', requestPath()), 0, count(explode('/', requestPath())) - 1)) == URLROOT . "vehicles" ? 'text-primary border-primary' : 'sm:border-transparent'?> border-b sm:border-b-2 hover:text-primary hover:border-primary"
+            class="w-full block text-center py-3 sm:p-0 sm:w-fit sm:pb-1 transition-all duration-300 <?= requestPath() == URLROOT . "vehicles" || baseUrl() == URLROOT . "vehicles" ? 'text-primary border-primary' : 'sm:border-transparent'?> border-b sm:border-b-2 hover:text-primary hover:border-primary"
           >
             <a href="<?= URLROOT . "vehicles" ?>">Vehicles</a>
           </li>
@@ -40,15 +40,22 @@
                 <a href="<?= URLROOT . "reservations" ?>">Reservations</a>
               </li>
               <li
-                class="w-full block text-center py-3 sm:p-0 sm:w-fit sm:pb-1 transition-all duration-300 <?= requestPath() == URLROOT . "themes" ? 'text-primary border-primary' : 'sm:border-transparent'?> border-b sm:border-b-2 hover:text-primary hover:border-primary"
+                class="w-full block text-center py-3 sm:p-0 sm:w-fit sm:pb-1 transition-all duration-300 <?= requestPath() == URLROOT . "themes" || baseUrl() == URLROOT . "themes" || baseUrl() == URLROOT . "articles" ? 'text-primary border-primary' : 'sm:border-transparent'?> border-b sm:border-b-2 hover:text-primary hover:border-primary"
               >
                 <a href="<?= URLROOT . "themes" ?>">Blog</a>
               </li>
               <li
-                class="cursor-pointer mt-5 sm:m-0 pt-1 pb-2 transition-all duration-300 bg-primary text-white px-2 rounded-lg"
+                class="w-full block text-center py-3 sm:p-0 sm:w-fit sm:pb-1 transition-all duration-300 <?= requestPath() == URLROOT . "favorites" ? 'text-primary border-primary' : 'sm:border-transparent'?> border-b sm:border-b-2 hover:text-primary hover:border-primary"
+              >
+                <a href="<?= URLROOT . "favorites" ?>">Favorites</a>
+              </li>
+              <li
+                class="cursor-pointer mt-5 sm:m-0 py-1 transition-all duration-300 bg-primary text-white px-2 rounded-lg"
               >
                 <form action="<?= URLROOT . "logout" ?>" method="POST">
-                  <button>Logout</button>
+                  <button>
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                  </button>
                 </form>
               </li>
           <?php

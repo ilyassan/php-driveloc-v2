@@ -38,19 +38,19 @@
                 ?>
                 <!-- Dashboard -->
                 <a href="<?= URLROOT ?>" class="flex items-center gap-3 px-4 py-2 <?= isActive(URLROOT) ?> rounded-lg">
-                    <i class="fas fa-tachometer-alt"></i>
+                    <i class="fas fa-home"></i>
                     <span>Dashboard</span>
                 </a>
 
                 <!-- Vehicles Section -->
                 <div class="space-y-1 pt-2">
                     <p class="px-4 text-xs font-semibold text-gray-400 uppercase">Vehicles</p>
-                    <a href="<?= URLROOT . 'vehicles' ?>" class="flex items-center gap-3 px-4 py-2 <?= isActive(URLROOT . 'vehicles') ?> rounded-lg">
+                    <a href="<?= URLROOT . 'vehicles' ?>" class="flex items-center gap-3 px-4 py-2 <?=  baseUrl() == URLROOT . 'vehicles/edit' ? isActive(requestPath()) : isActive(URLROOT . 'vehicles') ?> rounded-lg">
                         <i class="fas fa-car"></i>
                         <span>All Vehicles</span>
                     </a>
                     <a href="<?= URLROOT . 'vehicles/create' ?>" class="flex items-center gap-3 px-4 py-2 <?= isActive(URLROOT . 'vehicles/create') ?> rounded-lg">
-                        <i class="fas fa-plus"></i>
+                        <i class="fas fa-plus-circle"></i>
                         <span>Add Vehicle</span>
                     </a>
                 </div>
@@ -59,7 +59,7 @@
                 <div class="space-y-1 pt-2">
                     <p class="px-4 text-xs font-semibold text-gray-400 uppercase">Vehicle Categories</p>
                     <a href="<?= URLROOT . 'categories' ?>" class="flex items-center gap-3 px-4 py-2 <?= isActive(URLROOT . 'categories') ?> rounded-lg">
-                        <i class="fas fa-layer-group"></i>
+                        <i class="fas fa-tags"></i>
                         <span>Categories</span>
                     </a>
                 </div>
@@ -68,19 +68,20 @@
                 <div class="space-y-1 pt-2">
                     <p class="px-4 text-xs font-semibold text-gray-400 uppercase">Blog</p>
                     <a href="<?= URLROOT . 'themes' ?>" class="flex items-center gap-3 px-4 py-2 <?= isActive(URLROOT . 'themes') ?> rounded-lg">
-                        <i class="fas fa-layer-group"></i>
+                        <i class="fas fa-palette"></i>
                         <span>Themes</span>
                     </a>
                     <a href="<?= URLROOT . 'tags' ?>" class="flex items-center gap-3 px-4 py-2 <?= isActive(URLROOT . 'tags') ?> rounded-lg">
-                        <i class="fas fa-layer-group"></i>
+                        <i class="fas fa-hashtag"></i>
                         <span>Tags</span>
                     </a>
-                    <a href="<?= URLROOT . 'articles' ?>" class="flex items-center gap-3 px-4 py-2 <?= isActive(URLROOT . 'articles') ?> rounded-lg">
-                        <i class="fas fa-layer-group"></i>
+                    <a href="<?= URLROOT . 'articles' ?>" class="flex items-center gap-3 px-4 py-2 <?= strpos(requestPath(), URLROOT . 'articles') === 0 && strpos(requestPath(), URLROOT . 'articles/pending') !== 0 ? 'text-primary bg-primary/10' : 'text-gray-600 hover:bg-gray-100' ?> rounded-lg">
+                        <i class="fas fa-file-alt"></i>
                         <span>Articles</span>
                     </a>
-                    <a href="<?= URLROOT . 'articles/pending' ?>" class="flex items-center gap-3 px-4 py-2 <?= isActive(URLROOT . 'articles/pending') ?> rounded-lg">
-                        <i class="fas fa-layer-group"></i>
+
+                    <a href="<?= URLROOT . 'articles/pending' ?>" class="flex items-center gap-3 px-4 py-2 <?= strpos(requestPath(), URLROOT . 'articles/pending') === 0 ? 'text-primary bg-primary/10' : 'text-gray-600 hover:bg-gray-100' ?> rounded-lg">
+                        <i class="fas fa-hourglass-half"></i>
                         <span>Pending Articles</span>
                     </a>
                 </div>
@@ -89,7 +90,7 @@
                 <div class="space-y-1 pt-2">
                     <p class="px-4 text-xs font-semibold text-gray-400 uppercase">Users</p>
                     <a href="<?= URLROOT . 'users' ?>" class="flex items-center gap-3 px-4 py-2 <?= isActive(URLROOT . 'users') ?> rounded-lg">
-                        <i class="fas fa-users"></i>
+                        <i class="fas fa-user-friends"></i>
                         <span>All Users</span>
                     </a>
                 </div>
@@ -97,7 +98,6 @@
                 <!-- Logout Section -->
                 <div class="space-y-1 pt-2">
                     <p class="px-4 text-xs font-semibold text-gray-400 uppercase">Logout</p>
-                    
                     <!-- Logout Button -->
                     <form action="<?= URLROOT . "logout" ?>" method="POST">
                         <button class="flex items-center gap-3 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg w-full">

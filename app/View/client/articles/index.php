@@ -1,4 +1,12 @@
 <main class="container mx-auto py-12">
+
+    <!-- Back Link -->
+    <div class="mb-4">
+        <a href="<?= URLROOT . 'themes' ?>" class="flex items-center text-primary text-3xl">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+    </div>
+
     <!-- Theme Header -->
     <div class="mb-8">
         <h1 class="text-4xl font-bold text-gray-800"><?= $theme->getName() ?></h1>

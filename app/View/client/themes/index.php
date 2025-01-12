@@ -16,7 +16,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <?php foreach ($themes as $theme):?>
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-shadow">
+                <div onclick="window.location.href='<?= htmlspecialchars(URLROOT . 'themes/' . $theme['id']) ?>'" class="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-shadow">
                     <img src="<?= $theme["image_name"] ? ASSETSROOT . 'images/themes/' .  $theme["image_name"] : 'https://placehold.co/600x400?text=Minimalist+Theme' ?>" alt="Car Reviews" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2"><?= $theme["name"] ?></h3>

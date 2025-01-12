@@ -70,6 +70,10 @@
         self::$db->execute();
 
         $result = self::$db->single();
+
+        if (!$result) {
+            return false;
+        }
         return new self($result->id, $result->name, $result->description, $result->image_name);
     }
     
@@ -78,6 +82,7 @@
         $sql = "SELECT t.*, COUNT(a.id) as articles_count
                 FROM themes t
                 LEFT JOIN articles a ON a.theme_id = t.id
+                WHERE a.is_published = 1
                 GROUP BY t.id";
 
         self::$db->query($sql);

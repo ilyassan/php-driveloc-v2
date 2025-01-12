@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <h1 class="font-bold text-3xl text-center text-secondary">Our Collection</h1>
+    <h1 class="font-bold text-3xl text-center text-secondary mt-10 md:mt-0">Our Collection</h1>
 
     <?php
         foreach ($categoriesWithVehicles as $category => $vehicles) {
