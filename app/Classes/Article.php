@@ -159,18 +159,27 @@
                     a.*,
                     CONCAT(u.first_name, ' ', u.last_name) as author_name,
                     COUNT(DISTINCT l.id) as likes_count,
-                    COUNT(DISTINCT d.id) as dislikes_count
+                    COUNT(DISTINCT d.id) as dislikes_count,
+                    GROUP_CONCAT(t.name) as tags
                 FROM articles a
                 LEFT JOIN likes l ON l.article_id = a.id
                 LEFT JOIN dislikes d ON d.article_id = a.id
                 JOIN users u ON u.id = a.client_id
+                LEFT JOIN articles_tags at ON at.article_id = a.id
+                LEFT JOIN tags t ON t.id = at.tag_id
                 WHERE a.id = :id";
 
         self::$db->query($sql);
         self::$db->bind(':id', $id);
-        self::$db->execute();
 
         $result = self::$db->single();
+
+        if ($result && $result->tags) {
+            $result->tags = explode(',', $result->tags);
+        }else{
+            $result->tags = [];
+        }
+        
         return $result;
     }
 
@@ -274,7 +283,8 @@
                     COUNT(DISTINCT c.id) as comments_count,
                     li.article_id as is_liked,
                     di.article_id as is_disliked,
-                    f.article_id as is_favorite
+                    f.article_id as is_favorite,
+                    GROUP_CONCAT(t.name) as tags
                 FROM articles a
                 LEFT JOIN likes l ON l.article_id = a.id
                 LEFT JOIN likes li ON li.article_id = a.id AND li.client_id = :client_id
@@ -282,6 +292,8 @@
                 LEFT JOIN dislikes di ON di.article_id = a.id AND di.client_id = :client_id
                 LEFT JOIN comments c ON c.article_id = a.id
                 LEFT JOIN favorites f ON f.article_id = a.id AND f.client_id = :client_id
+                LEFT JOIN articles_tags at ON at.article_id = a.id
+                LEFT JOIN tags t ON t.id = at.tag_id
                 WHERE a.theme_id = :theme_id";
         
         // Add search condition only if search term is not empty
@@ -304,8 +316,18 @@
             self::$db->bind(':search_term', '%' . $searchTerm . '%');
         }
     
-        $results = self::$db->results();
+        $articles = self::$db->results();
     
-        return $results;
+        foreach ($articles as $key => $article) {
+            if (!empty($article['tags'])) {
+                $article['tags'] = explode(',', $article['tags']);
+                $articles[$key] = $article;
+            }else{
+                $article['tags'] = [];
+            }
+        }
+
+
+        return $articles;
     }
 }
