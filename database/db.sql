@@ -116,7 +116,6 @@ CREATE TABLE articles (
     id INT AUTO_INCREMENT,
     title VARCHAR(255),
     content TEXT,
-    image_name VARCHAR(255),
     is_published BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     views INT DEFAULT 0,
