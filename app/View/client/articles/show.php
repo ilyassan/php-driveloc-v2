@@ -44,7 +44,7 @@
             </div>
 
             <!-- Engagement Section -->
-            <div class="border-t border-gray-200 mt-8 pt-6">
+            <div class="border-t flex justify-between border-gray-200 mt-8 pt-6">
                 <form method="POST" class="flex items-center gap-6">
                     <input type="hidden" name="article_id" value="<?= $article->id ?>">
                     <button type="submit" formaction="<?= URLROOT . 'articles/like' ?>" class="<?= $isLiked ? 'text-primary' : 'text-gray-500' ?> flex items-center gap-2 hover:text-red-500">
@@ -60,6 +60,19 @@
                         <i class="far fa-share-square"></i> Share
                     </button>
                 </form>
+
+                <!-- Article Tags -->
+                <div class="flex flex-wrap gap-2">
+                    <?php if (!empty($article->tags)): ?>
+                        <?php foreach ($article->tags as $tag): ?>
+                            <span 
+                                class="px-2 py-1 rounded-full text-xs font-medium bg-primary text-white"
+                            >
+                                #<?= htmlspecialchars($tag) ?>
+                            </span>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
 

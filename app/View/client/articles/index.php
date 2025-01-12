@@ -88,7 +88,24 @@
                                 <i class="far fa-comment"></i> <?= $article['comments_count'] ?>
                             </span>
                         </div>
-                        <a href="<?= URLROOT . 'articles/' . $article["id"] ?>" class="text-red-500 hover:text-red-600 font-medium">Read More →</a>
+
+                        <div class="mb-3">
+                            <a href="<?= URLROOT . 'articles/' . $article["id"] ?>" class="text-red-500 hover:text-red-600 font-medium">Read More →</a>
+                        </div>
+                        <div class="flex gap-y-2 flex-wrap">
+                            <!-- Tags Section -->
+                            <?php if (!empty($article['tags'])): ?>
+                                <div class="flex flex-wrap gap-2">
+                                    <?php foreach ($article['tags'] as $tag): ?>
+                                        <span 
+                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium transition-colors duration-200 bg-primary text-white"
+                                        >
+                                            #<?= htmlspecialchars($tag) ?>
+                                    </span>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                     </form>
                 </div>
             <?php endforeach; ?>
