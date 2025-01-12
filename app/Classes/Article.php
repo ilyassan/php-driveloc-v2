@@ -298,8 +298,11 @@
         
         // Add search condition only if search term is not empty
         if (!empty($searchTerm)) {
-            $sql .= " AND (a.title LIKE :search_term 
-                     OR a.content LIKE :search_term)";
+            $sql .= " AND (
+                          a.title LIKE :search_term 
+                          OR a.content LIKE :search_term
+                          OR t.name LIKE :search_term
+                      )";
         }
         
         $sql .= " GROUP BY a.id
