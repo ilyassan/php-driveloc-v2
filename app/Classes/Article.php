@@ -4,19 +4,17 @@
     private $id;
     private $title;
     private $content;
-    private $image_name;
     private $is_published;
     private $created_at;
     private $views;
     private $theme_id;
     private $client_id;
 
-    public function __construct($id, $title, $content, $image_name, $is_published, $created_at, $views, $theme_id, $client_id)
+    public function __construct($id, $title, $content, $is_published, $created_at, $views, $theme_id, $client_id)
     {
         $this->id = $id;
         $this->title = $title;
         $this->content = $content;
-        $this->image_name = $image_name;
         $this->is_published = $is_published;
         $this->created_at = $created_at;
         $this->views = $views;
@@ -59,11 +57,6 @@
         return $this->client_id;
     }
 
-    public function getImageName()
-    {
-        return $this->image_name;
-    }
-
     public function getViews()
     {
         return $this->views;
@@ -81,13 +74,12 @@
 
     public function save()
     {
-        $sql = "INSERT INTO articles (title, content, image_name, theme_id, client_id)
-                VALUES (:title, :content, :image_name, :theme_id, :client_id)
+        $sql = "INSERT INTO articles (title, content, theme_id, client_id)
+                VALUES (:title, :content, :theme_id, :client_id)
                 ";
         self::$db->query($sql);
         self::$db->bind(':title', $this->title);
         self::$db->bind(':content', $this->content);
-        self::$db->bind(':image_name', $this->image_name);
         self::$db->bind(':theme_id', $this->theme_id);
         self::$db->bind(':client_id', $this->client_id);
 
@@ -102,7 +94,7 @@
     public function update()
     {
         $sql = "UPDATE articles
-                SET title = :title, content = :content, is_published = :is_published, image_name = :image_name, theme_id = :theme_id, client_id = :client_id, views = :views
+                SET title = :title, content = :content, is_published = :is_published, theme_id = :theme_id, client_id = :client_id, views = :views
                 WHERE id = :id";
 
         self::$db->query($sql);
@@ -110,7 +102,6 @@
         self::$db->bind(':title', $this->title);
         self::$db->bind(':content', $this->content);
         self::$db->bind(':is_published', $this->is_published);
-        self::$db->bind(':image_name', $this->image_name);
         self::$db->bind(':views', $this->views);
         self::$db->bind(':theme_id', $this->theme_id);
         self::$db->bind(':client_id', $this->client_id);
@@ -160,7 +151,7 @@
         self::$db->execute();
 
         $result = self::$db->single();
-        return new self($result->id, $result->title, $result->content, $result->image_name, $result->is_published, $result->created_at, $result->views, $result->theme_id, $result->client_id);
+        return new self($result->id, $result->title, $result->content, $result->is_published, $result->created_at, $result->views, $result->theme_id, $result->client_id);
     }
 
     public static function findFullDetails(int $id) {
