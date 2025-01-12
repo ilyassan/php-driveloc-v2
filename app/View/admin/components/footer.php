@@ -24,15 +24,17 @@
             const title = document.querySelector('header h1');
             
             const titles = {
-                'dashboard': 'Dashboard',
+                '': 'Dashboard',
                 'vehicles': 'Vehicles Management',
                 'create': 'Add New Vehicle',
                 'categories': 'Categories Management',
-                'reservations': 'Reservations',
-                'upcoming': 'Upcoming Reservations',
+                'themes': 'Themes Management',
+                'tags': 'Tags Management',
+                'articles': 'Articles Management',
+                'pending': 'Pending Articles',
                 'users': 'Users Management'
             };
-            title.textContent = titles[currentPage] || 'Dashboard';
+            title.textContent = titles[currentPage] || 'Article';
         }
 
         updateHeaderTitle();
